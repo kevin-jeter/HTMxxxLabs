@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HTMxxx: NAC Procurement – Labs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #005ea2;
+      --accent: #cce5ff;
+      --gray-border: #dee2e6;
+    }
+
+    body.light {
+      --bg-light: #ffffff;
+      --text-dark: #000000;
+      --card-bg: #ffffff;
+      --header-bg: var(--primary);
+      --input-bg: #f4f4f4;
+      --table-head-bg: #f0f0f0;
+      --table-alt-row-bg: #f9f9f9;
+      --gray-border: #adb5bd;
+    }
+
+    body.dark {
+      --bg-light: #1c1e21;
+      --text-dark: #e9ecef;
+      --card-bg: #2c2f33;
+      --header-bg: #003d7a;
+      --input-bg: #333840;
+      --table-head-bg: #3a3d41;
+      --table-alt-row-bg: #2a2d31;
+      h1, h2, h3 { color: var(--accent); }
+      .callout { border-left-color: var(--accent); }
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      font-size: 12pt;
+      line-height: 1.5;
+      background: var(--bg-light);
+      padding: 20px;
+      color: var(--text-dark);
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    h1, h2, h3 { color: var(--primary); margin-bottom: 10px; }
+    h1 { font-size: 24pt; }
+    h2 { font-size: 18pt; }
+    h3 { font-size: 14pt; }
+
+    .header, .footer {
+      background-color: var(--header-bg);
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+    .header h1 { margin: 0; color: white; }
+
+    .card {
+      background: var(--card-bg);
+      padding: 10px;
+      border-radius: 0;
+      box-shadow: none;
+      margin-bottom: 10px;
+    }
+
+    .lab-section {
+      display: none;
+      background: var(--card-bg);
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+    .lab-section.active { display: block; }
+
+    .filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
+
+    .theme-switch { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
+    .theme-switch input { display: none; }
+    .theme-switch .slider { width: 40px; height: 20px; background-color: #ccc; border-radius: 20px; position: relative; transition: background-color 0.3s ease; }
+    .theme-switch .slider::before { content: ""; position: absolute; width: 16px; height: 16px; top: 2px; left: 2px; background-color: white; border-radius: 50%; transition: transform 0.3s ease; }
+    .theme-switch input:checked + .slider { background-color: var(--primary); }
+    .theme-switch input:checked + .slider::before { transform: translateX(20px); }
+    .switch-label { font-size: 0.9rem; color: var(--text-dark); }
+
+    .callout { border-left: 4px solid var(--primary); background: var(--table-alt-row-bg); padding: 10px 12px; border-radius: 6px; margin: 10px 0; }
+
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      font-size: 12pt;
+      background-color: var(--card-bg);
+      color: var(--text-dark);
+      border: 2px solid #555;
+    }
+
+    .styled-table th,
+    .styled-table td {
+      border: 1px solid #666;
+      padding: 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+
+    .styled-table thead th {
+      background-color: var(--table-head-bg);
+      border-bottom: 2px solid #555; 
+      font-weight: 600;
+    }
+
+    .styled-table tbody tr:nth-child(even) {
+      background-color: var(--table-alt-row-bg);
+    }
+
+    input[type="text"], select, textarea {
+      background-color: var(--input-bg);
+      color: var(--text-dark);
+      border: 1px solid var(--gray-border);
+      padding: 8px;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      font-family: inherit;
+      width: 100%;
+      resize: vertical;
+      min-height: 120px;
+    }
+
+    .code-container {
+      position: relative;
+      margin: 12px 0;
+    }
+    .code-container pre {
+      background-color: #f8f9fa;
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      padding: 14px;
+      margin: 0;
+      overflow-x: auto;
+      font-family: Consolas, "Courier New", monospace;
+      font-size: 11.5pt;
+      line-height: 1.4;
+      color: #222;
+    }
+    body.dark .code-container pre {
+      background-color: #1e2125;
+      border-color: #444;
+      color: #e9ecef;
+    }
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      cursor: pointer;
+      opacity: 0.85;
+    }
+    .copy-btn:hover { opacity: 1; }
+
+    .part-header {
+      background-color: var(--table-alt-row-bg);
+      padding: 8px 12px;
+      border-radius: 4px;
+      margin-top: 20px;
+    }
+
+    details.realworld {
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+      margin: 15px 0;
+      background: var(--table-alt-row-bg);
+    }
+    details.realworld summary {
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 600;
+      color: var(--primary);
+      list-style: none;
+    }
+    details.realworld summary:hover {
+      background-color: rgba(0, 94, 162, 0.08);
+    }
+    details.realworld[open] summary {
+      border-bottom: 1px solid var(--gray-border);
+    }
+    .objectives {
+      background: #e8f4ff;
+      border-left: 5px solid #005ea2;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+    }
+    body.dark .objectives {
+      background: #1a3a52;
+      border-left-color: #4da3ff;
+    }
+
+    /* Additional styles for answer toggles */
+    .answer-toggle {
+      margin: 15px 0;
+    }
+    .answer-btn {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .answer-btn:hover {
+      opacity: 0.9;
+    }
+    .answer-content {
+      display: none;
+      margin-top: 10px;
+      padding: 15px;
+      background: var(--table-alt-row-bg);
+      border: 1px solid var(--gray-border);
+      border-radius: 6px;
+    }
+    .answer-content.show {
+      display: block;
+    }
+    .answer-label {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 8px;
+      display: block;
+    }
+  </style>
+</head>
+<body class="light">
+  <header class="header">
+    <h1>HTMxxx: NAC Procurement – Labs</h1>
+  </header>
+
+  <section class="card filter-bar">
+    <div>
+      <strong>Select Lab:</strong>
+      <select id="labFilter" onchange="filterLabs()">
+        <option value="">----Select----</option>
+        <option value="User Guide">User Guide</option>
+        <option value="Lab 1">Lab 1: Resource Scavenger Hunt</option>
+        <option value="Lab 2">Lab 2: Technical Specification Review Activity</option>
+        <option value="Lab 3">Lab 3: Technical Specifications Drafting Activity</option>
+        <option value="Lab 4">Lab 4: Vendor Questions Scenario Activity</option>
+        <option value="Lab 5">Lab 5: Technical Evaluation Activity</option>
+        <option value="Lab 6">Lab 6: Culminating Scenario Activity</option>
+        <option value="Lab 7">Lab 7: NAC Procurement Review Game</option>
+      </select>
+    </div>
+
+    <label class="theme-switch">
+      <input type="checkbox" id="theme-toggle">
+      <span class="slider"></span>
+      <span class="switch-label">Dark Mode</span>
+    </label>
+  </section>
+
+  <section class="lab-section" data-lab="Lab 1">
+    <h2>Lab 1: Resource Scavenger Hunt</h2>
+
+    <div class="objectives">
+      <strong>Activity:</strong> Resource Scavenger Hunt (Individual, 10 minutes)<br><br>
+      Participants will locate and navigate key NAC procurement resources (e.g., MIEAD SharePoint, NAC HTME SharePoint, FORCE Guide) to complete a set of targeted tasks. 
+      This activity reinforces awareness of where critical tools, templates, and guidance are located and how to access them efficiently.
+    </div>
+
+    <p><strong>Instructions:</strong> Use the resources on the MIEAD and NAC SharePoint sites to complete the tasks below. <strong>Type your answers in the boxes provided</strong>, then click <strong>Show Correct Answer</strong> to check your work.</p>
+
+    <div class="part-header">1. Where can you find the list of VISN MIEAD Leads?</div>
+    <div style="margin: 8px 0 12px 0;">
+      <label><strong>Your Answer:</strong></label><br>
+      <textarea placeholder="Type the location or link here..." rows="2" style="width: 100%;"></textarea>
+    </div>
+    <div class="answer-toggle">
+      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
+      <div class="answer-content">
+        <p><strong>Correct Answer:</strong> MIEAD SharePoint site:</p>
+        <p><a href="https://dvagov.sharepoint.com/sites/VACOVHADUSHOM/HTM/NAC/Lists/mieadWorkflowsVisnBmeList/MIEAD%20Leads.aspx" target="_blank" rel="noopener">https://dvagov.sharepoint.com/sites/VACOVHADUSHOM/HTM/NAC/Lists/mieadWorkflowsVisnBmeList/MIEAD%20Leads.aspx</a></p>
+      </div>
+    </div>
+
+    <div class="part-header">2. Who is your VISN MIEAD Lead?</div>
+    <div style="margin: 8px 0 12px 0;">
+      <label><strong>Your Answer:</strong></label><br>
+      <textarea placeholder="Type the name of your VISN MIEAD Lead here..." rows="2" style="width: 100%;"></textarea>
+    </div>
+    <div class="answer-toggle">
+      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
+      <div class="answer-content">
+        <p><strong>Correct Answer:</strong> It depends on which VISN (or Office) you are from. See the full list below:</p>
+        
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th>VISN or Office</th>
+              <th>MIEAD Lead</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Sharma, Kristy</td></tr>
+            <tr><td>2</td><td>Belets, Irina</td></tr>
+            <tr><td>4</td><td>Chang, Ben</td></tr>
+            <tr><td>5</td><td>Mulinix, Angela</td></tr>
+            <tr><td>6</td><td>Reers, Cevin, VISN6 NAC Liaison</td></tr>
+            <tr><td>7</td><td>Dang, Vincent</td></tr>
+            <tr><td>8</td><td>Slade, Katy</td></tr>
+            <tr><td>9</td><td>Zellers, Nicole</td></tr>
+            <tr><td>10</td><td>Patterson, Nicole M. VHAV10</td></tr>
+            <tr><td>12</td><td>Frydach, Michael</td></tr>
+            <tr><td>15</td><td>Witting, James G. (V15)</td></tr>
+            <tr><td>16</td><td>Patel, Devang J. (HOU)</td></tr>
+            <tr><td>17</td><td>Komolafe, Adetoun</td></tr>
+            <tr><td>19</td><td>O'Rourke, Kelly</td></tr>
+            <tr><td>20</td><td>Collins, Justin M</td></tr>
+            <tr><td>21</td><td>Nguyen, Phuc</td></tr>
+            <tr><td>22</td><td>Moser, Andrew</td></tr>
+            <tr><td>23</td><td>McCarthy, Coleman P.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="part-header">3. Where is the latest version of the FORCE Guide found?</div>
+    <div style="margin: 8px 0 12px 0;">
+      <label><strong>Your Answer:</strong></label><br>
+      <textarea placeholder="Type the location or link here..." rows="2" style="width: 100%;"></textarea>
+    </div>
+    <div class="answer-toggle">
+      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
+      <div class="answer-content">
+        <p><strong>Correct Answer:</strong> NAC SharePoint site:</p>
+        <p><a href="https://dvagov.sharepoint.com/sites/vacooalcnacncscomm/SitePages/HTME.aspx" target="_blank" rel="noopener">https://dvagov.sharepoint.com/sites/vacooalcnacncscomm/SitePages/HTME.aspx</a></p>
+      </div>
+    </div>
+
+    <div class="part-header">4. If you have not gone through this training but need access to the MIEAD Tech Spec templates, how do you gain access?</div>
+    <div style="margin: 8px 0 12px 0;">
+      <label><strong>Your Answer:</strong></label><br>
+      <textarea placeholder="Type how to gain access here..." rows="2" style="width: 100%;"></textarea>
+    </div>
+    <div class="answer-toggle">
+      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
+      <div class="answer-content">
+        <p><strong>Correct Answer:</strong> Instructions are found on the MIEAD SharePoint site (home page).</p>
+      </div>
+    </div>
+
+    <div class="part-header">5. How do you find if all appropriate stakeholders have signed the NDA?</div>
+    <div style="margin: 8px 0 12px 0;">
+      <label><strong>Your Answer:</strong></label><br>
+      <textarea placeholder="Describe the method(s) to check NDA signatures..." rows="3" style="width: 100%;"></textarea>
+    </div>
+    <div class="answer-toggle">
+      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
+      <div class="answer-content">
+        <p><strong>Correct Answer:</strong> There are two ways to check:</p>
+        <ol>
+          <li><strong>NDA Power App:</strong><br>
+            <a href="https://apps.gov.powerapps.us/play/e/default-e95f1b23-abaf-45ee-821d-b7ab251ab3bf/a/f3f0857c-2a07-4fc2-a34b-46c5ac04296a?tenantId=e95f1b23-abaf-45ee-821d-b7ab251ab3bf" target="_blank" rel="noopener">Open NDA Power App</a>
+            <img src="_LabImages/Lab1-5.1.png" alt="NDA Power App Screenshot" style="max-width: 100%;">
+          </li>
+          <li><strong>MIEAD SharePoint site</strong> – check directly on the home page</li>
+        </ol>
+        <img src="_LabImages/Lab1-5.2.png" alt="MIEAD SharePoint NDA Section Screenshot" style="max-width: 100%;">
+      </div>
+    </div>
+
+    <div class="part-header">6. Where can you find the latest schedule for upcoming consolidations?</div>
+    <div style="margin: 8px 0 12px 0;">
+      <label><strong>Your Answer:</strong></label><br>
+      <textarea placeholder="Type the location or link here..." rows="2" style="width: 100%;"></textarea>
+    </div>
+    <div class="answer-toggle">
+      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
+      <div class="answer-content">
+        <p><strong>Correct Answer:</strong> NAC SharePoint site:</p>
+        <p><a href="https://dvagov.sharepoint.com/sites/vacooalcnacncscomm/SitePages/HTME.aspx" target="_blank" rel="noopener">https://dvagov.sharepoint.com/sites/vacooalcnacncscomm/SitePages/HTME.aspx</a></p>
+        <img src="_LabImages/Lab1-6.png" alt="NAC SharePoint HTME Page Screenshot" style="max-width: 100%;">
+      </div>
+    </div>
+
+    <div class="part-header">7. Where can you find the posting of the formal solicitation (pre and final solicitation, including amendments)?</div>
+    <div style="margin: 8px 0 12px 0;">
+      <label><strong>Your Answer:</strong></label><br>
+      <textarea placeholder="Describe how to find the formal solicitation postings..." rows="3" style="width: 100%;"></textarea>
+    </div>
+    <div class="answer-toggle">
+      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
+      <div class="answer-content">
+        <p><strong>Correct Answer:</strong> There are two ways to find this:</p>
+        <ol>
+          <li>Via the email that came out from NAC CO, forwarded by MIEAD workgroup to MIEAD Leads and then down to stations.</li>
+          <li>A link is posted on the <strong>MIEAD SharePoint site</strong> (home page).</li>
+        </ol>
+        <img src="_LabImages/Lab1-7.2.png" alt="MIEAD SharePoint Solicitation Posting Screenshot" style="max-width: 100%;"> 
+      </div>
+    </div>
+
+    <div class="part-header">8. Where do you find if a part number or item is on a NAC IDIQ contract?</div>
+    <div style="margin: 8px 0 12px 0;">
+      <label><strong>Your Answer:</strong></label><br>
+      <textarea placeholder="Type where to find this information..." rows="2" style="width: 100%;"></textarea>
+    </div>
+    <div class="answer-toggle">
+      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
+      <div class="answer-content">
+        <p><strong>Correct Answer:</strong> Check the Pricebook from the vendor, which is located on the NAC SharePoint site.</p>
+        <img src="_LabImages/Lab1-8.png" alt="NAC SharePoint Pricebook Screenshot" style="max-width: 100%;">
+        <br><img src="_LabImages/Lab1-8.1.png" alt="NAC SharePoint Pricebook Screenshot 2" style="max-width: 100%;">
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top: 30px;">
+      <strong>Tip:</strong> Bookmark the key SharePoint sites for quick access during your daily work. The MIEAD SharePoint home page and the NAC HTME page are your primary hubs for procurement resources.
+    </div>
+  </section>
+
+<section class="lab-section" data-lab="Lab 2">
+  <h2>Lab 2: Technical Specification Review Activity</h2>
+
+  <div class="objectives">
+    <strong>Activity:</strong> Technical Specification Review Activity (Group or Individual)<br><br>
+    Participants will review a sample technical specification containing common errors and weaknesses. Learners will identify issues related to clarity, completeness, measurability, and vendor bias, then discuss how to improve the specification to align with NAC procurement best practices and VA requirements.
+  </div>
+
+  <p><strong>Instructions:</strong> Download the PDF file located at <a href="_LabDownloads/NAC Training Example - SCANNING.pdf" target="_blank" download>NAC Training Example - SCANNING.pdf</a>. Carefully review the entire document, paying special attention to sections labeled <strong>A through G</strong>. For each section, identify issues that should be improved, added, or removed. Focus on clarity, completeness, use of measurable requirements, avoidance of vendor bias, proper use of “shall/should/must”, and alignment with best practices. <strong>Type your observations and suggested improvements in the boxes provided below</strong>.</p>
+
+  <div class="part-header">Section A</div>
+  <div style="margin: 8px 0 12px 0;">
+    <label><strong>Your Answer – Issues identified in Section A:</strong></label><br>
+    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
+  </div>
+
+  <div class="part-header">Section B</div>
+  <div style="margin: 8px 0 12px 0;">
+    <label><strong>Your Answer – Issues identified in Section B:</strong></label><br>
+    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
+  </div>
+
+  <div class="part-header">Section C</div>
+  <div style="margin: 8px 0 12px 0;">
+    <label><strong>Your Answer – Issues identified in Section C:</strong></label><br>
+    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
+  </div>
+
+  <div class="part-header">Section D</div>
+  <div style="margin: 8px 0 12px 0;">
+    <label><strong>Your Answer – Issues identified in Section D:</strong></label><br>
+    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
+  </div>
+
+  <div class="part-header">Section E</div>
+  <div style="margin: 8px 0 12px 0;">
+    <label><strong>Your Answer – Issues identified in Section E:</strong></label><br>
+    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
+  </div>
+
+  <div class="part-header">Section F</div>
+  <div style="margin: 8px 0 12px 0;">
+    <label><strong>Your Answer – Issues identified in Section F:</strong></label><br>
+    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
+  </div>
+
+  <div class="part-header">Section G</div>
+  <div style="margin: 8px 0 12px 0;">
+    <label><strong>Your Answer – Issues identified in Section G:</strong></label><br>
+    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
+  </div>
+
+  <div class="callout" style="margin-top: 30px;">
+    <strong>Tip:</strong> When reviewing technical specifications, always ask: “Could multiple qualified vendors respond to this requirement?” and “Can this requirement be objectively tested or verified?” If the answer is no, the requirement likely needs improvement.
+  </div>
+</section>
+
+
+  <footer class="footer">
+    <p>&copy; 2026 HTMxxx Lab Materials</p>
+  </footer>
+
+  <script>
+    function filterLabs() {
+      const select = document.getElementById('labFilter');
+      const value = select.value;
+      const sections = document.querySelectorAll('.lab-section');
+      sections.forEach(section => {
+        section.classList.toggle('active', section.dataset.lab === value || value === '');
+      });
+    }
+
+    const themeToggle = document.getElementById('theme-toggle');
+    themeToggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark', themeToggle.checked);
+      document.body.classList.toggle('light', !themeToggle.checked);
+    });
+
+    function copyCode(button) {
+      const pre = button.nextElementSibling;
+      const code = pre.innerText.trim();
+      
+      navigator.clipboard.writeText(code).then(() => {
+        const originalText = button.innerHTML;
+        button.innerHTML = "Copied!";
+        button.style.backgroundColor = "#28a745";
+        setTimeout(() => {
+          button.innerHTML = originalText;
+          button.style.backgroundColor = "";
+        }, 1800);
+      }).catch(() => {
+        const textArea = document.createElement("textarea");
+        textArea.value = code;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand("copy");
+        document.body.removeChild(textArea);
+        const originalText = button.innerHTML;
+        button.innerHTML = "Copied!";
+        setTimeout(() => button.innerHTML = originalText, 1800);
+      });
+    }
+
+    function toggleAnswer(btn) {
+      const content = btn.nextElementSibling;
+      if (content.classList.contains('show')) {
+        content.classList.remove('show');
+        btn.textContent = btn.getAttribute('data-show-text') || 'Show Answer';
+      } else {
+        content.classList.add('show');
+        btn.textContent = btn.getAttribute('data-hide-text') || 'Hide Answer';
+      }
+    }
+
+    window.addEventListener('load', () => {
+      const select = document.getElementById('labFilter');
+      select.value = "User Guide";
+      filterLabs();
+    });
+  </script>
+</body>
+</html>
