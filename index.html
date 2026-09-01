@@ -3,887 +3,1419 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>HTMxxx: NAC Procurement – Labs</title>
-  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+  <meta name="color-scheme" content="light dark" />
+  <title>HTMxxx: NAC Procurement Labs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet" />
   <style>
     :root {
       --primary: #005ea2;
-      --accent: #cce5ff;
-      --gray-border: #dee2e6;
-    }
-
-    body.light {
-      --bg-light: #ffffff;
-      --text-dark: #000000;
-      --card-bg: #ffffff;
-      --header-bg: var(--primary);
-      --input-bg: #f4f4f4;
-      --table-head-bg: #f0f0f0;
-      --table-alt-row-bg: #f9f9f9;
-      --gray-border: #adb5bd;
+      --primary-dark: #003d6b;
+      --primary-soft: #e8f2fb;
+      --accent: #0b7d4b;
+      --accent-soft: #e6f6ee;
+      --warn: #8a5a00;
+      --warn-soft: #fff4d6;
+      --danger: #b42318;
+      --bg: #f4f6f8;
+      --surface: #ffffff;
+      --surface-2: #eef2f6;
+      --text: #1b1f24;
+      --text-muted: #4a5560;
+      --border: #c5ced6;
+      --focus: #0b5cab;
+      --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 8px 24px rgba(16, 24, 40, 0.06);
+      --radius: 12px;
+      --header-h: 64px;
+      --max: 1080px;
+      color-scheme: light;
     }
 
     body.dark {
-      --bg-light: #1c1e21;
-      --text-dark: #e9ecef;
-      --card-bg: #2c2f33;
-      --header-bg: #003d7a;
-      --input-bg: #333840;
-      --table-head-bg: #3a3d41;
-      --table-alt-row-bg: #2a2d31;
-      h1, h2, h3 { color: var(--accent); }
-      .callout { border-left-color: var(--accent); }
+      --primary: #7ab7ef;
+      --primary-dark: #9cc9f4;
+      --primary-soft: #16324a;
+      --accent: #6fdbb0;
+      --accent-soft: #16352a;
+      --warn: #f0c36a;
+      --warn-soft: #3a2d12;
+      --danger: #ff8a80;
+      --bg: #121417;
+      --surface: #1c2026;
+      --surface-2: #262b33;
+      --text: #eef2f6;
+      --text-muted: #b7c0c9;
+      --border: #3d4652;
+      --focus: #8ec4ff;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px rgba(0, 0, 0, 0.28);
+      color-scheme: dark;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
 
     body {
-      font-family: 'Segoe UI', sans-serif;
-      font-size: 12pt;
-      line-height: 1.5;
-      background: var(--bg-light);
-      padding: 20px;
-      color: var(--text-dark);
-      transition: background 0.3s ease, color 0.3s ease;
+      margin: 0;
+      font-family: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.6;
+      background: var(--bg);
+      color: var(--text);
     }
 
-    h1, h2, h3 { color: var(--primary); margin-bottom: 10px; }
-    h1 { font-size: 24pt; }
-    h2 { font-size: 18pt; }
-    h3 { font-size: 14pt; }
+    a { color: var(--primary); }
+    a:hover { text-decoration-thickness: 2px; }
 
-    .header, .footer {
-      background-color: var(--header-bg);
-      color: white;
-      text-align: center;
-      padding: 15px 0;
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 12px;
+      top: -48px;
+      z-index: 1000;
+      background: var(--primary);
+      color: #fff;
+      padding: 8px 14px;
       border-radius: 8px;
-      margin-bottom: 24px;
+      font-weight: 700;
     }
-    .header h1 { margin: 0; color: white; }
+    .skip-link:focus { top: 12px; }
 
-    .card {
-      background: var(--card-bg);
-      padding: 10px;
-      border-radius: 0;
-      box-shadow: none;
-      margin-bottom: 10px;
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--primary-dark);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
+    }
+    body.dark .app-header { background: #0d2236; }
+
+    .header-inner {
+      max-width: calc(var(--max) + 280px);
+      margin: 0 auto;
+      min-height: var(--header-h);
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
     }
 
-    .lab-section {
-      display: none;
-      background: var(--card-bg);
-      padding: 10px;
-      margin-bottom: 10px;
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
+    .brand .kicker {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      font-weight: 700;
+    }
+    .brand h1 {
+      margin: 0;
+      font-size: 1.2rem;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .icon-btn, .ghost-btn, .primary-btn, .answer-btn {
+      font: inherit;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+    }
+
+    .ghost-btn, .icon-btn {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.28);
+      padding: 8px 12px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+    .ghost-btn:hover, .icon-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+    .primary-btn, .answer-btn {
+      background: var(--primary);
+      color: #fff;
+      padding: 9px 14px;
+      font-weight: 700;
+    }
+    body.dark .primary-btn, body.dark .answer-btn {
+      background: #0b5cab;
+      color: #fff;
+    }
+    .primary-btn:hover, .answer-btn:hover { filter: brightness(1.08); }
+    .answer-btn[aria-expanded="true"] { background: var(--primary-dark); }
+
+    .layout {
+      max-width: calc(var(--max) + 280px);
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 22px;
+      align-items: start;
+    }
+
+    .sidebar {
+      position: sticky;
+      top: calc(var(--header-h) + 16px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 14px;
+    }
+
+    .sidebar h2 {
+      margin: 0 0 10px;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .lab-nav {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .lab-nav button {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text);
+      border-radius: 8px;
+      padding: 9px 10px;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .lab-nav button:hover { background: var(--surface-2); }
+    .lab-nav button[aria-current="true"] {
+      background: var(--primary-soft);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+    }
+    .lab-nav .meta {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .progress-wrap {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    progress {
+      width: 100%;
+      height: 10px;
+      accent-color: var(--accent);
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    .lab-section { display: none; }
     .lab-section.active { display: block; }
 
-    .filter-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-
-    .theme-switch { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
-    .theme-switch input { display: none; }
-    .theme-switch .slider { width: 40px; height: 20px; background-color: #ccc; border-radius: 20px; position: relative; transition: background-color 0.3s ease; }
-    .theme-switch .slider::before { content: ""; position: absolute; width: 16px; height: 16px; top: 2px; left: 2px; background-color: white; border-radius: 50%; transition: transform 0.3s ease; }
-    .theme-switch input:checked + .slider { background-color: var(--primary); }
-    .theme-switch input:checked + .slider::before { transform: translateX(20px); }
-    .switch-label { font-size: 0.9rem; color: var(--text-dark); }
-
-    .callout { border-left: 4px solid var(--primary); background: var(--table-alt-row-bg); padding: 10px 12px; border-radius: 6px; margin: 10px 0; }
-
-    .styled-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-      font-size: 12pt;
-      background-color: var(--card-bg);
-      color: var(--text-dark);
-      border: 2px solid #555;
+    .page-card, .task-card, .callout, .objectives {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
     }
 
-    .styled-table th,
-    .styled-table td {
-      border: 1px solid #666;
-      padding: 10px;
-      vertical-align: top;
-      text-align: left;
+    .page-intro {
+      padding: 22px 24px;
+      margin-bottom: 18px;
     }
 
-    .styled-table thead th {
-      background-color: var(--table-head-bg);
-      border-bottom: 2px solid #555; 
+    h2.lab-title {
+      margin: 0 0 8px;
+      font-family: "Source Serif 4", Georgia, serif;
+      font-size: 1.8rem;
+      line-height: 1.25;
+      color: var(--primary-dark);
+    }
+
+    .lab-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 3px 10px;
+      font-size: 0.82rem;
       font-weight: 600;
+      color: var(--text-muted);
     }
 
-    .styled-table tbody tr:nth-child(even) {
-      background-color: var(--table-alt-row-bg);
+    .objectives, .callout, .tip {
+      padding: 14px 16px;
+      margin: 0 0 16px;
+    }
+    .objectives { border-left: 5px solid var(--primary); }
+    .callout { border-left: 5px solid var(--warn); background: var(--warn-soft); }
+    .tip { border-left: 5px solid var(--accent); background: var(--accent-soft); }
+
+    .objectives strong, .callout strong, .tip strong { display: inline; }
+
+    .task-card {
+      padding: 18px 18px 16px;
+      margin-bottom: 16px;
     }
 
-    input[type="text"], select, textarea {
-      background-color: var(--input-bg);
-      color: var(--text-dark);
-      border: 1px solid var(--gray-border);
-      padding: 8px;
-      border-radius: 4px;
-      box-sizing: border-box;
+    .task-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.12rem;
+      color: var(--primary-dark);
     }
 
-    textarea {
-      font-family: inherit;
+    label.field-label {
+      display: block;
+      font-weight: 700;
+      margin: 8px 0 6px;
+    }
+
+    textarea, select, input[type="text"] {
       width: 100%;
-      resize: vertical;
-      min-height: 120px;
+      font: inherit;
+      color: var(--text);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    textarea { min-height: 110px; resize: vertical; }
+    textarea:focus, select:focus, input[type="text"]:focus {
+      border-color: var(--focus);
+      background: var(--surface);
     }
 
-    .code-container {
-      position: relative;
-      margin: 12px 0;
-    }
-    .code-container pre {
-      background-color: #f8f9fa;
-      border: 1px solid var(--gray-border);
-      border-radius: 6px;
-      padding: 14px;
-      margin: 0;
-      overflow-x: auto;
-      font-family: Consolas, "Courier New", monospace;
-      font-size: 11.5pt;
-      line-height: 1.4;
-      color: #222;
-    }
-    body.dark .code-container pre {
-      background-color: #1e2125;
-      border-color: #444;
-      color: #e9ecef;
-    }
-    .copy-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      padding: 4px 10px;
-      font-size: 0.8rem;
-      border-radius: 4px;
-      cursor: pointer;
-      opacity: 0.85;
-    }
-    .copy-btn:hover { opacity: 1; }
-
-    .part-header {
-      background-color: var(--table-alt-row-bg);
-      padding: 8px 12px;
-      border-radius: 4px;
-      margin-top: 20px;
+    .field-hint {
+      margin: 6px 0 0;
+      color: var(--text-muted);
+      font-size: 0.88rem;
     }
 
-    details.realworld {
-      border: 1px solid var(--gray-border);
-      border-radius: 6px;
-      margin: 15px 0;
-      background: var(--table-alt-row-bg);
-    }
-    details.realworld summary {
-      padding: 10px 14px;
-      cursor: pointer;
-      font-weight: 600;
-      color: var(--primary);
-      list-style: none;
-    }
-    details.realworld summary:hover {
-      background-color: rgba(0, 94, 162, 0.08);
-    }
-    details.realworld[open] summary {
-      border-bottom: 1px solid var(--gray-border);
-    }
-    .objectives {
-      background: #e8f4ff;
-      border-left: 5px solid #005ea2;
-      padding: 12px 16px;
-      border-radius: 6px;
-      margin-bottom: 15px;
-    }
-    body.dark .objectives {
-      background: #1a3a52;
-      border-left-color: #4da3ff;
-    }
-
-    /* Additional styles for answer toggles */
-    .answer-toggle {
-      margin: 15px 0;
-    }
-    .answer-btn {
-      background-color: var(--primary);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 0.95rem;
-    }
-    .answer-btn:hover {
-      opacity: 0.9;
+    .answer-panel {
+      margin-top: 12px;
     }
     .answer-content {
       display: none;
-      margin-top: 10px;
-      padding: 15px;
-      background: var(--table-alt-row-bg);
-      border: 1px solid var(--gray-border);
-      border-radius: 6px;
+      margin-top: 12px;
+      padding: 14px;
+      background: var(--primary-soft);
+      border: 1px solid var(--border);
+      border-radius: 8px;
     }
-    .answer-content.show {
-      display: block;
+    .answer-content.show { display: block; }
+    .answer-content h4 {
+      margin: 0 0 8px;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--primary-dark);
     }
-    .answer-label {
-      font-weight: 600;
-      color: var(--primary);
-      margin-bottom: 8px;
-      display: block;
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      margin: 12px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    caption {
+      text-align: left;
+      font-weight: 700;
+      padding: 0 0 8px;
+      caption-side: top;
+    }
+    th, td {
+      border-bottom: 1px solid var(--border);
+      padding: 10px 12px;
+      vertical-align: top;
+      text-align: left;
+    }
+    thead th {
+      background: var(--surface-2);
+      font-weight: 700;
+    }
+    tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--surface-2) 55%, transparent); }
+
+    figure {
+      margin: 12px 0;
+    }
+    figure img {
+      max-width: 100%;
+      height: auto;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface-2);
+    }
+    figcaption {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+    img.missing {
+      display: none;
+    }
+
+    .scenario-grid {
+      display: grid;
+      gap: 14px;
+    }
+    .scenario {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+    .scenario header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      margin-bottom: 10px;
+      align-items: baseline;
+    }
+    .scenario .id {
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
+    .qa {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .qa > div {
+      background: var(--surface-2);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .qa h4 {
+      margin: 0 0 6px;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+    }
+    .qa p { margin: 0 0 8px; }
+    .qa p:last-child { margin-bottom: 0; }
+
+    .status {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: #123;
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 80;
+    }
+    .status.show { opacity: 1; }
+
+    footer.app-footer {
+      max-width: calc(var(--max) + 280px);
+      margin: 0 auto 24px;
+      padding: 0 20px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    .toolbar-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+        padding: 14px;
+      }
+      .sidebar { position: static; }
+      .lab-nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
+      .qa { grid-template-columns: 1fr; }
+      h2.lab-title { font-size: 1.45rem; }
+    }
+
+    @media print {
+      .skip-link, .app-header, .sidebar, .answer-btn, .ghost-btn, .icon-btn, .status, .toolbar-row {
+        display: none !important;
+      }
+      .layout { display: block; max-width: none; padding: 0; }
+      .lab-section { display: block !important; break-before: page; box-shadow: none; }
+      .lab-section:first-of-type { break-before: auto; }
+      .answer-content { display: block !important; }
+      body { background: #fff; color: #000; }
+      a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; }
     }
   </style>
 </head>
 <body class="light">
-  <header class="header">
-    <h1>HTMxxx: NAC Procurement – Labs</h1>
+  <a class="skip-link" href="#main">Skip to lab content</a>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="kicker">Healthcare Technology Management</span>
+        <h1>NAC Procurement Labs</h1>
+      </div>
+      <div class="header-actions">
+        <button class="ghost-btn" type="button" id="save-btn">Save answers</button>
+        <button class="ghost-btn" type="button" id="export-btn">Download answers</button>
+        <button class="ghost-btn" type="button" id="print-btn">Print / PDF</button>
+        <button class="icon-btn" type="button" id="theme-toggle" aria-pressed="false">
+          Dark mode
+        </button>
+      </div>
+    </div>
   </header>
 
-  <section class="card filter-bar">
-    <div>
-      <strong>Select Lab:</strong>
-      <select id="labFilter" onchange="filterLabs()">
-        <option value="">----Select----</option>
-        <option value="User Guide">User Guide</option>
-        <option value="Lab 1">Lab 1: Resource Scavenger Hunt</option>
-        <option value="Lab 2">Lab 2: Technical Specification Review Activity</option>
-        <option value="Lab 2b">Lab 2b: Technical Specifications Drafting Activity</option>
-        <option value="Lab 3">Lab 3: Vendor Questions Scenario Activity</option>
-        <option value="Lab 4">Lab 4: Technical Evaluation Activity</option>
-        <option value="Lab 5">Lab 5: Culminating Scenario Activity</option>
-        <option value="Lab 6">Lab 6: NAC Procurement Review Game</option>
-        <option value="Lab 7">Lab 7: NAC Procurement Review Game</option>
-      </select>
-    </div>
-
-    <label class="theme-switch">
-      <input type="checkbox" id="theme-toggle">
-      <span class="slider"></span>
-      <span class="switch-label">Dark Mode</span>
-    </label>
-  </section>
-
-  <section class="lab-section" data-lab="Lab 1">
-    <h2>Lab 1: Resource Scavenger Hunt</h2>
-
-    <div class="objectives">
-      <strong>Activity:</strong> Resource Scavenger Hunt (Individual, 10 minutes)<br><br>
-      Participants will locate and navigate key NAC procurement resources (e.g., MIEAD SharePoint, NAC HTME SharePoint, FORCE Guide) to complete a set of targeted tasks. 
-      This activity reinforces awareness of where critical tools, templates, and guidance are located and how to access them efficiently.
-    </div>
-
-    <p><strong>Instructions:</strong> Use the resources on the MIEAD and NAC SharePoint sites to complete the tasks below. <strong>Type your answers in the boxes provided</strong>, then click <strong>Show Correct Answer</strong> to check your work.</p>
-
-    <div class="part-header">1. Where can you find the list of VISN MIEAD Leads?</div>
-    <div style="margin: 8px 0 12px 0;">
-      <label><strong>Your Answer:</strong></label><br>
-      <textarea placeholder="Type the location or link here..." rows="2" style="width: 100%;"></textarea>
-    </div>
-    <div class="answer-toggle">
-      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
-      <div class="answer-content">
-        <p><strong>Correct Answer:</strong> MIEAD SharePoint site:</p>
-        <p><a href="https://dvagov.sharepoint.com/sites/VACOVHADUSHOM/HTM/NAC/Lists/mieadWorkflowsVisnBmeList/MIEAD%20Leads.aspx" target="_blank" rel="noopener">https://dvagov.sharepoint.com/sites/VACOVHADUSHOM/HTM/NAC/Lists/mieadWorkflowsVisnBmeList/MIEAD%20Leads.aspx</a></p>
+  <div class="layout">
+    <nav class="sidebar" aria-label="Lab navigation">
+      <h2>Labs</h2>
+      <ul class="lab-nav" id="lab-nav"></ul>
+      <div class="progress-wrap">
+        <div class="progress-label">
+          <span>Answered fields</span>
+          <span id="progress-text">0%</span>
+        </div>
+        <progress id="progress-bar" max="100" value="0" aria-labelledby="progress-text">0%</progress>
+        <p class="field-hint">Answers stay in this browser until you clear them.</p>
+        <div class="toolbar-row">
+          <button class="ghost-btn" type="button" id="clear-btn" style="background:transparent;color:var(--text);border-color:var(--border);">Clear saved answers</button>
+        </div>
       </div>
-    </div>
+    </nav>
 
-    <div class="part-header">2. Who is your VISN MIEAD Lead?</div>
-    <div style="margin: 8px 0 12px 0;">
-      <label><strong>Your Answer:</strong></label><br>
-      <textarea placeholder="Type the name of your VISN MIEAD Lead here..." rows="2" style="width: 100%;"></textarea>
-    </div>
-    <div class="answer-toggle">
-      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
-      <div class="answer-content">
-        <p><strong>Correct Answer:</strong> It depends on which VISN (or Office) you are from. See the full list below:</p>
-        
-        <table class="styled-table">
-          <thead>
-            <tr>
-              <th>VISN or Office</th>
-              <th>MIEAD Lead</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>1</td><td>Sharma, Kristy</td></tr>
-            <tr><td>2</td><td>Belets, Irina</td></tr>
-            <tr><td>4</td><td>Chang, Ben</td></tr>
-            <tr><td>5</td><td>Mulinix, Angela</td></tr>
-            <tr><td>6</td><td>Reers, Cevin, VISN6 NAC Liaison</td></tr>
-            <tr><td>7</td><td>Dang, Vincent</td></tr>
-            <tr><td>8</td><td>Slade, Katy</td></tr>
-            <tr><td>9</td><td>Zellers, Nicole</td></tr>
-            <tr><td>10</td><td>Patterson, Nicole M. VHAV10</td></tr>
-            <tr><td>12</td><td>Frydach, Michael</td></tr>
-            <tr><td>15</td><td>Witting, James G. (V15)</td></tr>
-            <tr><td>16</td><td>Patel, Devang J. (HOU)</td></tr>
-            <tr><td>17</td><td>Komolafe, Adetoun</td></tr>
-            <tr><td>19</td><td>O'Rourke, Kelly</td></tr>
-            <tr><td>20</td><td>Collins, Justin M</td></tr>
-            <tr><td>21</td><td>Nguyen, Phuc</td></tr>
-            <tr><td>22</td><td>Moser, Andrew</td></tr>
-            <tr><td>23</td><td>McCarthy, Coleman P.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <main id="main" tabindex="-1">
+      <section class="lab-section active" data-lab="guide" aria-labelledby="guide-title">
+        <div class="page-intro page-card">
+          <h2 class="lab-title" id="guide-title">How to use this workbook</h2>
+          <div class="lab-meta">
+            <span class="chip">Start here</span>
+            <span class="chip">Self-paced</span>
+            <span class="chip">Answers optional to reveal</span>
+          </div>
+          <p>This page is the student workbook for the NAC procurement labs. Choose a lab in the left menu. Type your responses in the boxes. Use <strong>Show model answer</strong> only after you have attempted the task.</p>
+          <ul>
+            <li>Your typed answers are saved automatically in this browser.</li>
+            <li>Use <strong>Download answers</strong> before you leave a shared computer.</li>
+            <li>Use <strong>Print / PDF</strong> if you need a paper copy for class discussion.</li>
+            <li>Correct answers in Lab 1 are hidden until you choose to reveal them.</li>
+          </ul>
+        </div>
+        <div class="objectives">
+          <strong>Suggested path:</strong> complete Lab 1 first so you know where the SharePoint tools live. Then work Labs 2 and 2b as a pair (review, then draft). Labs 3–5 apply those skills to vendor questions, evaluation, and a delayed procurement scenario.
+        </div>
+        <div class="tip">
+          <strong>Classroom tip:</strong> If you are in a breakout group, one person can share the screen while everyone types into their own copy. Compare wording before you reveal any model answers.
+        </div>
+      </section>
 
-    <div class="part-header">3. Where is the latest version of the FORCE Guide found?</div>
-    <div style="margin: 8px 0 12px 0;">
-      <label><strong>Your Answer:</strong></label><br>
-      <textarea placeholder="Type the location or link here..." rows="2" style="width: 100%;"></textarea>
-    </div>
-    <div class="answer-toggle">
-      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
-      <div class="answer-content">
-        <p><strong>Correct Answer:</strong> NAC SharePoint site:</p>
-        <p><a href="https://dvagov.sharepoint.com/sites/vacooalcnacncscomm/SitePages/HTME.aspx" target="_blank" rel="noopener">https://dvagov.sharepoint.com/sites/vacooalcnacncscomm/SitePages/HTME.aspx</a></p>
-      </div>
-    </div>
+      <section class="lab-section" data-lab="lab1" aria-labelledby="lab1-title">
+        <div class="page-intro page-card">
+          <h2 class="lab-title" id="lab1-title">Lab 1: Resource scavenger hunt</h2>
+          <div class="lab-meta">
+            <span class="chip">Individual</span>
+            <span class="chip">About 10 minutes</span>
+          </div>
+          <div class="objectives">
+            <strong>Goal:</strong> Find the key NAC procurement resources (MIEAD SharePoint, NAC HTME SharePoint, FORCE Guide) and practice getting to them quickly.
+          </div>
+          <p>Use the MIEAD and NAC SharePoint sites to complete each task. Type your answer, then reveal the model answer to check your work.</p>
+        </div>
 
-    <div class="part-header">4. If you have not gone through this training but need access to the MIEAD Tech Spec templates, how do you gain access?</div>
-    <div style="margin: 8px 0 12px 0;">
-      <label><strong>Your Answer:</strong></label><br>
-      <textarea placeholder="Type how to gain access here..." rows="2" style="width: 100%;"></textarea>
-    </div>
-    <div class="answer-toggle">
-      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
-      <div class="answer-content">
-        <p><strong>Correct Answer:</strong> Instructions are found on the MIEAD SharePoint site (home page).</p>
-      </div>
-    </div>
+        <article class="task-card">
+          <h3>1. Where can you find the list of VISN MIEAD Leads?</h3>
+          <label class="field-label" for="lab1-q1">Your answer</label>
+          <textarea id="lab1-q1" data-persist placeholder="Location or link"></textarea>
+          <div class="answer-panel">
+            <button class="answer-btn" type="button" aria-expanded="false" aria-controls="lab1-a1">Show model answer</button>
+            <div class="answer-content" id="lab1-a1">
+              <h4>Model answer</h4>
+              <p>MIEAD SharePoint site:</p>
+              <p><a href="https://dvagov.sharepoint.com/sites/VACOVHADUSHOM/HTM/NAC/Lists/mieadWorkflowsVisnBmeList/MIEAD%20Leads.aspx" target="_blank" rel="noopener">MIEAD Leads list (SharePoint)</a></p>
+            </div>
+          </div>
+        </article>
 
-    <div class="part-header">5. How do you find if all appropriate stakeholders have signed the NDA?</div>
-    <div style="margin: 8px 0 12px 0;">
-      <label><strong>Your Answer:</strong></label><br>
-      <textarea placeholder="Describe the method(s) to check NDA signatures..." rows="3" style="width: 100%;"></textarea>
-    </div>
-    <div class="answer-toggle">
-      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
-      <div class="answer-content">
-        <p><strong>Correct Answer:</strong> There are two ways to check:</p>
-        <ol>
-          <li><strong>NDA Power App:</strong><br>
-            <a href="https://apps.gov.powerapps.us/play/e/default-e95f1b23-abaf-45ee-821d-b7ab251ab3bf/a/f3f0857c-2a07-4fc2-a34b-46c5ac04296a?tenantId=e95f1b23-abaf-45ee-821d-b7ab251ab3bf" target="_blank" rel="noopener">Open NDA Power App</a>
-            <img src="_LabImages/Lab1-5.1.png" alt="NDA Power App Screenshot" style="max-width: 100%;">
-          </li>
-          <li><strong>MIEAD SharePoint site</strong> – check directly on the home page</li>
-        </ol>
-        <img src="_LabImages/Lab1-5.2.png" alt="MIEAD SharePoint NDA Section Screenshot" style="max-width: 100%;">
-      </div>
-    </div>
+        <article class="task-card">
+          <h3>2. Who is your VISN MIEAD Lead?</h3>
+          <label class="field-label" for="lab1-q2">Your answer</label>
+          <textarea id="lab1-q2" data-persist placeholder="Name of your VISN MIEAD Lead"></textarea>
+          <div class="answer-panel">
+            <button class="answer-btn" type="button" aria-expanded="false" aria-controls="lab1-a2">Show model answer</button>
+            <div class="answer-content" id="lab1-a2">
+              <h4>Model answer</h4>
+              <p>It depends on which VISN or office you are from. Use the list below, then confirm on the live SharePoint list if names have changed.</p>
+              <div class="table-wrap">
+                <table>
+                  <caption>VISN and office MIEAD leads</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">VISN or office</th>
+                      <th scope="col">MIEAD lead</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>1</td><td>Sharma, Kristy</td></tr>
+                    <tr><td>2</td><td>Belets, Irina</td></tr>
+                    <tr><td>4</td><td>Chang, Ben</td></tr>
+                    <tr><td>5</td><td>Mulinix, Angela</td></tr>
+                    <tr><td>6</td><td>Reers, Cevin, VISN6 NAC Liaison</td></tr>
+                    <tr><td>7</td><td>Dang, Vincent</td></tr>
+                    <tr><td>8</td><td>Slade, Katy</td></tr>
+                    <tr><td>9</td><td>Zellers, Nicole</td></tr>
+                    <tr><td>10</td><td>Patterson, Nicole M. VHAV10</td></tr>
+                    <tr><td>12</td><td>Frydach, Michael</td></tr>
+                    <tr><td>15</td><td>Witting, James G. (V15)</td></tr>
+                    <tr><td>16</td><td>Patel, Devang J. (HOU)</td></tr>
+                    <tr><td>17</td><td>Komolafe, Adetoun</td></tr>
+                    <tr><td>19</td><td>O'Rourke, Kelly</td></tr>
+                    <tr><td>20</td><td>Collins, Justin M</td></tr>
+                    <tr><td>21</td><td>Nguyen, Phuc</td></tr>
+                    <tr><td>22</td><td>Moser, Andrew</td></tr>
+                    <tr><td>23</td><td>McCarthy, Coleman P.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </article>
 
-    <div class="part-header">6. Where can you find the latest schedule for upcoming consolidations?</div>
-    <div style="margin: 8px 0 12px 0;">
-      <label><strong>Your Answer:</strong></label><br>
-      <textarea placeholder="Type the location or link here..." rows="2" style="width: 100%;"></textarea>
-    </div>
-    <div class="answer-toggle">
-      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
-      <div class="answer-content">
-        <p><strong>Correct Answer:</strong> NAC SharePoint site:</p>
-        <p><a href="https://dvagov.sharepoint.com/sites/vacooalcnacncscomm/SitePages/HTME.aspx" target="_blank" rel="noopener">https://dvagov.sharepoint.com/sites/vacooalcnacncscomm/SitePages/HTME.aspx</a></p>
-        <img src="_LabImages/Lab1-6.png" alt="NAC SharePoint HTME Page Screenshot" style="max-width: 100%;">
-      </div>
-    </div>
+        <article class="task-card">
+          <h3>3. Where is the latest version of the FORCE Guide found?</h3>
+          <label class="field-label" for="lab1-q3">Your answer</label>
+          <textarea id="lab1-q3" data-persist placeholder="Location or link"></textarea>
+          <div class="answer-panel">
+            <button class="answer-btn" type="button" aria-expanded="false" aria-controls="lab1-a3">Show model answer</button>
+            <div class="answer-content" id="lab1-a3">
+              <h4>Model answer</h4>
+              <p>NAC SharePoint site:</p>
+              <p><a href="https://dvagov.sharepoint.com/sites/vacooalcnacncscomm/SitePages/HTME.aspx" target="_blank" rel="noopener">NAC HTME page</a></p>
+            </div>
+          </div>
+        </article>
 
-    <div class="part-header">7. Where can you find the posting of the formal solicitation (pre and final solicitation, including amendments)?</div>
-    <div style="margin: 8px 0 12px 0;">
-      <label><strong>Your Answer:</strong></label><br>
-      <textarea placeholder="Describe how to find the formal solicitation postings..." rows="3" style="width: 100%;"></textarea>
-    </div>
-    <div class="answer-toggle">
-      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
-      <div class="answer-content">
-        <p><strong>Correct Answer:</strong> There are two ways to find this:</p>
-        <ol>
-          <li>Via the email that came out from NAC CO, forwarded by MIEAD workgroup to MIEAD Leads and then down to stations.</li>
-          <li>A link is posted on the <strong>MIEAD SharePoint site</strong> (home page).</li>
-        </ol>
-        <img src="_LabImages/Lab1-7.2.png" alt="MIEAD SharePoint Solicitation Posting Screenshot" style="max-width: 100%;"> 
-      </div>
-    </div>
+        <article class="task-card">
+          <h3>4. If you have not taken this training but need the MIEAD tech spec templates, how do you get access?</h3>
+          <label class="field-label" for="lab1-q4">Your answer</label>
+          <textarea id="lab1-q4" data-persist placeholder="Describe the access process"></textarea>
+          <div class="answer-panel">
+            <button class="answer-btn" type="button" aria-expanded="false" aria-controls="lab1-a4">Show model answer</button>
+            <div class="answer-content" id="lab1-a4">
+              <h4>Model answer</h4>
+              <p>Follow the instructions on the MIEAD SharePoint home page.</p>
+            </div>
+          </div>
+        </article>
 
-    <div class="part-header">8. Where do you find if a part number or item is on a NAC IDIQ contract?</div>
-    <div style="margin: 8px 0 12px 0;">
-      <label><strong>Your Answer:</strong></label><br>
-      <textarea placeholder="Type where to find this information..." rows="2" style="width: 100%;"></textarea>
-    </div>
-    <div class="answer-toggle">
-      <button class="answer-btn" onclick="toggleAnswer(this)" data-show-text="Show Correct Answer" data-hide-text="Hide Correct Answer">Show Correct Answer</button>
-      <div class="answer-content">
-        <p><strong>Correct Answer:</strong> Check the Pricebook from the vendor, which is located on the NAC SharePoint site.</p>
-        <img src="_LabImages/Lab1-8.png" alt="NAC SharePoint Pricebook Screenshot" style="max-width: 100%;">
-        <br><img src="_LabImages/Lab1-8.1.png" alt="NAC SharePoint Pricebook Screenshot 2" style="max-width: 100%;">
-      </div>
-    </div>
+        <article class="task-card">
+          <h3>5. How do you confirm that all appropriate stakeholders have signed the NDA?</h3>
+          <label class="field-label" for="lab1-q5">Your answer</label>
+          <textarea id="lab1-q5" data-persist placeholder="Describe one or both methods"></textarea>
+          <div class="answer-panel">
+            <button class="answer-btn" type="button" aria-expanded="false" aria-controls="lab1-a5">Show model answer</button>
+            <div class="answer-content" id="lab1-a5">
+              <h4>Model answer</h4>
+              <p>There are two ways to check:</p>
+              <ol>
+                <li>
+                  <strong>NDA Power App</strong> —
+                  <a href="https://apps.gov.powerapps.us/play/e/default-e95f1b23-abaf-45ee-821d-b7ab251ab3bf/a/f3f0857c-2a07-4fc2-a34b-46c5ac04296a?tenantId=e95f1b23-abaf-45ee-821d-b7ab251ab3bf" target="_blank" rel="noopener">Open NDA Power App</a>
+                  <figure>
+                    <img src="_LabImages/Lab1-5.1.png" alt="Screenshot of the NDA Power App used to check stakeholder signature status" />
+                    <figcaption>NDA Power App signature check (opens only if the lab image folder is present)</figcaption>
+                  </figure>
+                </li>
+                <li>
+                  <strong>MIEAD SharePoint home page</strong> — check the NDA section directly.
+                  <figure>
+                    <img src="_LabImages/Lab1-5.2.png" alt="Screenshot of the NDA section on the MIEAD SharePoint home page" />
+                    <figcaption>MIEAD SharePoint NDA section</figcaption>
+                  </figure>
+                </li>
+              </ol>
+            </div>
+          </div>
+        </article>
 
-    <div class="callout" style="margin-top: 30px;">
-      <strong>Tip:</strong> Bookmark the key SharePoint sites for quick access during your daily work. The MIEAD SharePoint home page and the NAC HTME page are your primary hubs for procurement resources.
-    </div>
-  </section>
+        <article class="task-card">
+          <h3>6. Where can you find the latest schedule for upcoming consolidations?</h3>
+          <label class="field-label" for="lab1-q6">Your answer</label>
+          <textarea id="lab1-q6" data-persist placeholder="Location or link"></textarea>
+          <div class="answer-panel">
+            <button class="answer-btn" type="button" aria-expanded="false" aria-controls="lab1-a6">Show model answer</button>
+            <div class="answer-content" id="lab1-a6">
+              <h4>Model answer</h4>
+              <p>NAC SharePoint site:</p>
+              <p><a href="https://dvagov.sharepoint.com/sites/vacooalcnacncscomm/SitePages/HTME.aspx" target="_blank" rel="noopener">NAC HTME page</a></p>
+              <figure>
+                <img src="_LabImages/Lab1-6.png" alt="Screenshot of the NAC HTME page showing the upcoming consolidations schedule" />
+                <figcaption>Upcoming consolidations on the NAC HTME page</figcaption>
+              </figure>
+            </div>
+          </div>
+        </article>
 
-<section class="lab-section" data-lab="Lab 2">
-  <h2>Lab 2: Technical Specification Review Activity</h2>
+        <article class="task-card">
+          <h3>7. Where is the formal solicitation posted (pre-solicitation, final solicitation, and amendments)?</h3>
+          <label class="field-label" for="lab1-q7">Your answer</label>
+          <textarea id="lab1-q7" data-persist placeholder="Describe both paths if you know them"></textarea>
+          <div class="answer-panel">
+            <button class="answer-btn" type="button" aria-expanded="false" aria-controls="lab1-a7">Show model answer</button>
+            <div class="answer-content" id="lab1-a7">
+              <h4>Model answer</h4>
+              <p>Two paths:</p>
+              <ol>
+                <li>Email from the NAC contracting officer, forwarded by the MIEAD workgroup to MIEAD leads and then to stations.</li>
+                <li>A link posted on the <strong>MIEAD SharePoint home page</strong>.</li>
+              </ol>
+              <figure>
+                <img src="_LabImages/Lab1-7.2.png" alt="Screenshot of solicitation posting links on the MIEAD SharePoint home page" />
+                <figcaption>Solicitation posting on the MIEAD home page</figcaption>
+              </figure>
+            </div>
+          </div>
+        </article>
 
-  <div class="objectives">
-    <strong>Activity:</strong> Technical Specification Review Activity (Group or Individual)<br><br>
-    Participants will review a sample technical specification containing common errors and weaknesses. Learners will identify issues related to clarity, completeness, measurability, and vendor bias, then discuss how to improve the specification to align with NAC procurement best practices and VA requirements.
+        <article class="task-card">
+          <h3>8. Where do you check whether a part number or item is on a NAC IDIQ contract?</h3>
+          <label class="field-label" for="lab1-q8">Your answer</label>
+          <textarea id="lab1-q8" data-persist placeholder="Where to look"></textarea>
+          <div class="answer-panel">
+            <button class="answer-btn" type="button" aria-expanded="false" aria-controls="lab1-a8">Show model answer</button>
+            <div class="answer-content" id="lab1-a8">
+              <h4>Model answer</h4>
+              <p>Check the vendor pricebook on the NAC SharePoint site.</p>
+              <figure>
+                <img src="_LabImages/Lab1-8.png" alt="Screenshot of vendor pricebook location on the NAC SharePoint site" />
+                <figcaption>Pricebook location on NAC SharePoint</figcaption>
+              </figure>
+              <figure>
+                <img src="_LabImages/Lab1-8.1.png" alt="Screenshot of a vendor pricebook listing part numbers on contract" />
+                <figcaption>Example pricebook listing</figcaption>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <div class="tip">
+          <strong>Tip:</strong> Bookmark the MIEAD home page and the NAC HTME page. Those two hubs cover most daily lookups.
+        </div>
+      </section>
+
+      <section class="lab-section" data-lab="lab2" aria-labelledby="lab2-title">
+        <div class="page-intro page-card">
+          <h2 class="lab-title" id="lab2-title">Lab 2: Technical specification review</h2>
+          <div class="lab-meta">
+            <span class="chip">Group or individual</span>
+            <span class="chip">Review activity</span>
+          </div>
+          <div class="objectives">
+            <strong>Goal:</strong> Review a sample specification that contains common errors. Identify problems with clarity, completeness, measurability, and vendor bias, then note how to fix them.
+          </div>
+          <p>
+            Download
+            <a href="_LabDownloads/NAC Training Example - SCANNING.pdf" download>NAC Training Example – SCANNING.pdf</a>
+            and review sections <strong>A through G</strong>. For each section, record issues to improve, add, or remove. Watch for measurable requirements, vendor-neutral language, and correct use of <em>shall / should / must</em>.
+          </p>
+        </div>
+
+        <article class="task-card">
+          <h3>Section A</h3>
+          <label class="field-label" for="lab2-a">Issues identified in Section A</label>
+          <textarea id="lab2-a" data-persist placeholder="Clarity, completeness, bias, or other issues"></textarea>
+        </article>
+        <article class="task-card">
+          <h3>Section B</h3>
+          <label class="field-label" for="lab2-b">Issues identified in Section B</label>
+          <textarea id="lab2-b" data-persist></textarea>
+        </article>
+        <article class="task-card">
+          <h3>Section C</h3>
+          <label class="field-label" for="lab2-c">Issues identified in Section C</label>
+          <textarea id="lab2-c" data-persist></textarea>
+        </article>
+        <article class="task-card">
+          <h3>Section D</h3>
+          <label class="field-label" for="lab2-d">Issues identified in Section D</label>
+          <textarea id="lab2-d" data-persist></textarea>
+        </article>
+        <article class="task-card">
+          <h3>Section E</h3>
+          <label class="field-label" for="lab2-e">Issues identified in Section E</label>
+          <textarea id="lab2-e" data-persist></textarea>
+        </article>
+        <article class="task-card">
+          <h3>Section F</h3>
+          <label class="field-label" for="lab2-f">Issues identified in Section F</label>
+          <textarea id="lab2-f" data-persist></textarea>
+        </article>
+        <article class="task-card">
+          <h3>Section G</h3>
+          <label class="field-label" for="lab2-g">Issues identified in Section G</label>
+          <textarea id="lab2-g" data-persist></textarea>
+        </article>
+
+        <div class="tip">
+          <strong>Review questions:</strong> Could more than one qualified vendor meet this requirement? Can it be tested or verified? If either answer is no, rewrite it.
+        </div>
+      </section>
+
+      <section class="lab-section" data-lab="lab2b" aria-labelledby="lab2b-title">
+        <div class="page-intro page-card">
+          <h2 class="lab-title" id="lab2b-title">Lab 2b: Technical specifications drafting</h2>
+          <div class="lab-meta">
+            <span class="chip">Breakout</span>
+            <span class="chip">About 20 minutes</span>
+          </div>
+          <div class="objectives">
+            <strong>Goal:</strong> Translate a clinical need into clear, measurable, vendor-neutral requirements for an assigned modality (CT, X-ray, MRI, or portable X-ray).
+          </div>
+          <p>Your group will receive a requirements overview and an ECRI spreadsheet. Identify the core clinical need, then draft procurement-ready requirements using the compliance matrix, benchmarking notes, and market research.</p>
+        </div>
+
+        <article class="task-card">
+          <h3>Assigned modality</h3>
+          <label class="field-label" for="lab2b-mod">Which modality is your group assigned?</label>
+          <select id="lab2b-mod" data-persist>
+            <option value="">Select one</option>
+            <option value="MRI">MRI</option>
+            <option value="CT Scanner">CT Scanner</option>
+            <option value="X-ray">X-ray</option>
+            <option value="Portable X-ray">Portable X-ray</option>
+          </select>
+        </article>
+
+        <article class="task-card">
+          <h3>1. Clinical need summary</h3>
+          <label class="field-label" for="lab2b-q1">Summarize the clinical need and intended use in one or two paragraphs</label>
+          <textarea id="lab2b-q1" data-persist placeholder="Patient population, clinical setting, and intended use"></textarea>
+        </article>
+        <article class="task-card">
+          <h3>2. Key technical requirements</h3>
+          <label class="field-label" for="lab2b-q2">Draft 5–8 clear, measurable, vendor-neutral requirements</label>
+          <textarea id="lab2b-q2" data-persist placeholder="List each requirement and how it will be measured or validated"></textarea>
+        </article>
+        <article class="task-card">
+          <h3>3. Vendor-neutral review</h3>
+          <label class="field-label" for="lab2b-q3">Flag biased or unmeasurable language and rewrite it</label>
+          <textarea id="lab2b-q3" data-persist placeholder="Replace brand-specific wording with performance or interoperability criteria"></textarea>
+        </article>
+        <article class="task-card">
+          <h3>4. Service and support needs</h3>
+          <label class="field-label" for="lab2b-q4">Installation, training, maintenance, software, or support requirements</label>
+          <textarea id="lab2b-q4" data-persist></textarea>
+        </article>
+        <article class="task-card">
+          <h3>5. Missing information / open questions</h3>
+          <label class="field-label" for="lab2b-q5">Assumptions, clarifications, or gaps to resolve before finalizing</label>
+          <textarea id="lab2b-q5" data-persist></textarea>
+        </article>
+
+        <div class="page-intro page-card">
+          <h3>Modality profiles</h3>
+          <div class="callout">
+            <strong>MRI:</strong> XXX VA Medical Center needs a replacement 1.5T MRI for diagnostic exams covering orthopedic, vascular, abdominal, cardiac, breast, and neurological applications. It requires advanced neuro and cardiac software, post-processing software, and liver lab plus elastography software for abdominal imaging.
+          </div>
+          <div class="callout">
+            <strong>CT Scanner:</strong> Radiology requests one advanced CT scanner for cardiovascular CT, CT angiography, neuro perfusion, dual-energy imaging, CT-guided interventions, and oncologic imaging. The veteran population includes high-complexity studies such as cardiac CT with high or irregular heart rates, spectral imaging, and perfusion.
+          </div>
+          <div class="callout">
+            <strong>X-ray:</strong> Radiology requests one digital radiographic (DR) room for outpatient musculoskeletal, orthopedic, chest, abdominal, and general diagnostic work, including standing scoliosis series and leg-length studies.
+          </div>
+          <div class="callout">
+            <strong>Portable X-ray:</strong> A portable radiographic unit is needed for surgical, orthopedic, critical care, and emergency procedures, used on inpatient units, in the Emergency Department, and in Operating Rooms.
+          </div>
+        </div>
+        <div class="tip">
+          <strong>Tip:</strong> If a requirement cannot be tested or verified, rewrite it before release.
+        </div>
+      </section>
+
+      <section class="lab-section" data-lab="lab3" aria-labelledby="lab3-title">
+        <div class="page-intro page-card">
+          <h2 class="lab-title" id="lab3-title">Lab 3: Vendor questions scenario</h2>
+          <div class="lab-meta">
+            <span class="chip">Whole group</span>
+            <span class="chip">About 10 minutes</span>
+          </div>
+          <div class="objectives">
+            <strong>Goal:</strong> Review realistic vendor questions and decide whether the government response is appropriate, whether clarification is needed, and whether the specification should change.
+          </div>
+          <p>For each scenario, discuss: Was the requirement valid? Was the question answered appropriately? Did the response require a spec change, a clarification, or no change?</p>
+        </div>
+
+        <div class="scenario-grid">
+          <article class="scenario">
+            <header>
+              <span class="id">XXXB67003</span>
+              <span class="chip">XR US</span>
+            </header>
+            <div class="qa">
+              <div>
+                <h4>Vendor question</h4>
+                <p>2c) Confirm need for or remove navigation software.</p>
+                <p>2d) Confirm need for or remove image fusion software.</p>
+                <p>5o) Remove phantom requirement or move it to value-add.</p>
+              </div>
+              <div>
+                <h4>Government response</h4>
+                <p><strong>2.c.</strong> Navigation software is a clinical requirement.</p>
+                <p><strong>2.d.</strong> Image fusion software is not required; the specification has been updated.</p>
+                <p><strong>5.o.</strong> Phantom for quality-control testing is a clinical requirement.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <header>
+              <span class="id">XXXB67010</span>
+              <span class="chip">XR US</span>
+            </header>
+            <div class="qa">
+              <div>
+                <h4>Vendor question</h4>
+                <p>Please confirm if this system will be used in the ED.</p>
+              </div>
+              <div>
+                <h4>Government response</h4>
+                <p>Yes, this is for use in the ED.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <header>
+              <span class="id">XXXB67011</span>
+              <span class="chip">XR MAMMO</span>
+            </header>
+            <div class="qa">
+              <div>
+                <h4>Vendor question</h4>
+                <p>3b. Imaging type-3D: Is this high-resolution imaging or standard resolution?</p>
+              </div>
+              <div>
+                <h4>Government response</h4>
+                <p>High resolution.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <header>
+              <span class="id">XXXB61000</span>
+              <span class="chip">NM SPECT CT</span>
+            </header>
+            <div class="qa">
+              <div>
+                <h4>Vendor question</h4>
+                <p>What is the clinical justification for a 128-slice CT? Would a 64-slice CT be acceptable?</p>
+              </div>
+              <div>
+                <h4>Government response</h4>
+                <p>VA has clinical justification for 128-slice.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <header>
+              <span class="id">XXXB61001</span>
+              <span class="chip">NM SPECT CT</span>
+            </header>
+            <div class="qa">
+              <div>
+                <h4>Vendor question</h4>
+                <p>Is there a dedicated room for UPS installation? If so, include room dimensions and drawings.</p>
+              </div>
+              <div>
+                <h4>Government response</h4>
+                <p>Site prep is a separate renovation. Design is in progress, so exact dimensions are not available. Provide the dimensions required to install the UPS listed in the requirements.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <header>
+              <span class="id">XXXB60010</span>
+              <span class="chip">XR US</span>
+            </header>
+            <div class="qa">
+              <div>
+                <h4>Vendor question</h4>
+                <p>Image fusion software: which procedures will use fusion?</p>
+                <p>Do you want a biplane, triplane, or both transducers?</p>
+                <p>Transrectal (TR) or transperineal (TP)?</p>
+                <p>Stabilized or freehand?</p>
+              </div>
+              <div>
+                <h4>Government response</h4>
+                <p>Trans-perineal prostate biopsies will use fusion.</p>
+                <p>Biplane only, per the original spec.</p>
+                <p>Clinical staff request transperineal only.</p>
+                <p>Clinical staff request freehand.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <header>
+              <span class="id">XXXB69022</span>
+              <span class="chip">XR PORT C ARM</span>
+            </header>
+            <div class="qa">
+              <div>
+                <h4>Vendor question</h4>
+                <p>Line 30, 1k. Please lower the minimum generator output power to 2.3 kW for fair, open competition.</p>
+              </div>
+              <div>
+                <h4>Government response</h4>
+                <p>VA has a clinical need for this specification and it is offered by two or more vendors.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <header>
+              <span class="id">XXXB63008</span>
+              <span class="chip">XR US</span>
+            </header>
+            <div class="qa">
+              <div>
+                <h4>Vendor question</h4>
+                <p>Request item 1.j. Minimum battery life be reduced to 90 min.</p>
+                <p>Request item 1.m. Maximum equipment weight be increased to 190 lbs.</p>
+              </div>
+              <div>
+                <h4>Government response</h4>
+                <p><strong>1.j</strong> — VA has a clinical need for this specification and it is offered by two or more vendors.</p>
+                <p><strong>1.m</strong> — Tech spec will not be changed.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="scenario">
+            <header>
+              <span class="id">XXX5B5011</span>
+              <span class="chip">XR US</span>
+            </header>
+            <div class="qa">
+              <div>
+                <h4>Vendor question</h4>
+                <p>1.b. Can the minimum active screen size be reduced from 21.5 to 14 inches to increase competition?</p>
+              </div>
+              <div>
+                <h4>Government response</h4>
+                <p>Original draft: No. Several vendors offer 21.5-inch or larger monitors; 14 inches would not be acceptable for a cardiac ultrasound machine used in most hospitals.</p>
+                <p><strong>Preferred response:</strong> VA has a clinical need for this specification and it is offered by two or more vendors.</p>
+              </div>
+            </div>
+          </article>
+        </div>
+
+        <article class="task-card">
+          <h3>Discussion notes</h3>
+          <label class="field-label" for="lab3-notes">Record which responses should change, be clarified, or stay as written</label>
+          <textarea id="lab3-notes" data-persist placeholder="Example: XXX5B5011 should use the standard clinical-need / two-or-more-vendors language."></textarea>
+        </article>
+      </section>
+
+      <section class="lab-section" data-lab="lab4" aria-labelledby="lab4-title">
+        <div class="page-intro page-card">
+          <h2 class="lab-title" id="lab4-title">Lab 4: Technical evaluation</h2>
+          <div class="lab-meta">
+            <span class="chip">Breakout</span>
+            <span class="chip">About 20 minutes</span>
+          </div>
+          <div class="objectives">
+            <strong>Goal:</strong> Evaluate simplified vendor proposals against defined criteria. Identify weaknesses, possible bias, and best value.
+          </div>
+          <p>Use the same modality as Labs 2b and 3. Pull the matrix aggregator and evaluate the sample vendor proposals. Note strengths, gaps, realism, and value.</p>
+        </div>
+
+        <article class="task-card">
+          <h3>1. Modality and proposal summary</h3>
+          <label class="field-label" for="lab4-q1">Assigned modality and main evaluation criteria</label>
+          <textarea id="lab4-q1" data-persist placeholder="MRI, CT, x-ray, or portable x-ray, plus key technical, service, and performance criteria"></textarea>
+        </article>
+        <article class="task-card">
+          <h3>2. Technical compliance review</h3>
+          <label class="field-label" for="lab4-q2">Compliant, non-compliant, or unsupported items</label>
+          <textarea id="lab4-q2" data-persist></textarea>
+        </article>
+        <article class="task-card">
+          <h3>3. Bias or risk assessment</h3>
+          <label class="field-label" for="lab4-q3">Vendor-specific language, unsupported claims, or competition risks</label>
+          <textarea id="lab4-q3" data-persist></textarea>
+        </article>
+        <article class="task-card">
+          <h3>4. Best-value recommendation</h3>
+          <label class="field-label" for="lab4-q4">Which vendor offers the best value, and why</label>
+          <textarea id="lab4-q4" data-persist></textarea>
+        </article>
+
+        <div class="page-intro page-card">
+          <h3>Sample procurement scenarios</h3>
+          <div class="table-wrap">
+            <table>
+              <caption>Example packages for discussion</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Example ID</th>
+                  <th scope="col">Modality</th>
+                  <th scope="col">Scenario</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>660B60001</td><td>Portable</td><td>March 2026 consolidation</td></tr>
+                <tr><td>589B63005</td><td>MRI</td><td>March 2026</td></tr>
+                <tr><td>521B62001</td><td>CT Scanner</td><td>January 2026 turnkey</td></tr>
+                <tr><td>671B60026</td><td>RAD</td><td>March 2026</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tip">
+            <strong>Optional role-play:</strong> Brief the class as a technical evaluation team on strengths, risks, and the recommended award.
+          </div>
+        </div>
+      </section>
+
+      <section class="lab-section" data-lab="lab5" aria-labelledby="lab5-title">
+        <div class="page-intro page-card">
+          <h2 class="lab-title" id="lab5-title">Lab 5: Culminating scenario</h2>
+          <div class="lab-meta">
+            <span class="chip">Breakout</span>
+            <span class="chip">About 30 minutes</span>
+          </div>
+          <div class="objectives">
+            <strong>Goal:</strong> Diagnose why a procurement can stall—incomplete specs, funding delays, or coordination breakdowns—and propose corrective actions.
+          </div>
+          <p>The VA hospital wants to replace a CT in Radiology. Identify coordination breakdowns that could delay award or installation, locate them in the process, and explain how to prevent them.</p>
+        </div>
+
+        <article class="task-card">
+          <h3>Scenario notes</h3>
+          <label class="field-label" for="lab5-case">What could delay award or installation, and how would you prevent it?</label>
+          <textarea id="lab5-case" data-persist></textarea>
+        </article>
+        <article class="task-card">
+          <h3>1. Coordination breakdown examples</h3>
+          <label class="field-label" for="lab5-q1">Examples that could delay award or installation</label>
+          <textarea id="lab5-q1" data-persist placeholder="Funding, unresolved technical issues, site prep, installation, or communication gaps"></textarea>
+        </article>
+        <article class="task-card">
+          <h3>2. Where the breakdown occurred</h3>
+          <label class="field-label" for="lab5-q2">Point in the procurement lifecycle</label>
+          <textarea id="lab5-q2" data-persist placeholder="Planning, specifications, evaluation, implementation, or funding"></textarea>
+        </article>
+        <article class="task-card">
+          <h3>3. Corrective actions</h3>
+          <label class="field-label" for="lab5-q3">Actions that would prevent a similar delay</label>
+          <textarea id="lab5-q3" data-persist></textarea>
+        </article>
+
+        <div class="page-intro page-card">
+          <h3>Example conversation points</h3>
+          <div class="callout">
+            <strong>Lifecycle planning</strong>
+            <ul>
+              <li>Funding not available in the desired fiscal year</li>
+              <li>Purchase approvals not completed in time (equipment committee, VACO HCHT, and similar)</li>
+            </ul>
+          </div>
+          <div class="callout">
+            <strong>Technical specifications / evaluation</strong>
+            <ul>
+              <li>Vendor matrix responses do not match the quote</li>
+              <li>Wireless requirements in the spec, vendor non-compliant</li>
+              <li>Missing ancillary equipment on quotes, forcing modifications</li>
+            </ul>
+          </div>
+          <div class="callout">
+            <strong>Implementation</strong>
+            <ul>
+              <li>Sizing issues found only after site prep starts</li>
+              <li>ERA processing delays</li>
+              <li>Miscommunication between HTM and clinical staff on downtime</li>
+              <li>Training delayed or not purchased in sufficient quantity</li>
+            </ul>
+          </div>
+          <div class="callout">
+            <strong>Finance / funding</strong>
+            <ul>
+              <li>Not enough funding on the equipment PO or turnkey PO</li>
+              <li>PO and G-invoice modifications needed</li>
+              <li>Funding types: activations, VACO funds</li>
+              <li>Equipment changes that require prior-year funds</li>
+            </ul>
+          </div>
+          <div class="tip">
+            <strong>Discussion prompt:</strong> Where did the project drift, which stakeholders were involved, and what early intervention would have reduced risk?
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
 
-  <p><strong>Instructions:</strong> Download the PDF file located at <a href="_LabDownloads/NAC Training Example - SCANNING.pdf" target="_blank" download>NAC Training Example - SCANNING.pdf</a>. Carefully review the entire document, paying special attention to sections labeled <strong>A through G</strong>. For each section, identify issues that should be improved, added, or removed. Focus on clarity, completeness, use of measurable requirements, avoidance of vendor bias, proper use of “shall/should/must”, and alignment with best practices. <strong>Type your observations and suggested improvements in the boxes provided below</strong>.</p>
-
-  <div class="part-header">Section A</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer – Issues identified in Section A:</strong></label><br>
-    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">Section B</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer – Issues identified in Section B:</strong></label><br>
-    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">Section C</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer – Issues identified in Section C:</strong></label><br>
-    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">Section D</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer – Issues identified in Section D:</strong></label><br>
-    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">Section E</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer – Issues identified in Section E:</strong></label><br>
-    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">Section F</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer – Issues identified in Section F:</strong></label><br>
-    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">Section G</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer – Issues identified in Section G:</strong></label><br>
-    <textarea placeholder="List clarity, completeness, bias, or other issues found in this section..." rows="4" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="callout" style="margin-top: 30px;">
-    <strong>Tip:</strong> When reviewing technical specifications, always ask: “Could multiple qualified vendors respond to this requirement?” and “Can this requirement be objectively tested or verified?” If the answer is no, the requirement likely needs improvement.
-  </div>
-</section>
-
-<section class="lab-section" data-lab="Lab 2b">
-  <h2>Lab 2b: Technical Specifications Drafting Activity</h2>
-
-  <div class="objectives">
-    <strong>Activity:</strong> Technical Specifications Drafting Activity (Breakout, 20 min)<br><br>
-    Participants will work in small groups using an assigned modality (CT, X-ray, MRI, or Portable X-ray) to translate clinical needs into clear, measurable, and vendor-agnostic technical requirements. Groups will use concepts from market research, benchmarking, and the Compliance Matrix Template to guide development and will share select examples with the larger group.
-  </div>
-
-  <p><strong>Instructions:</strong> Each group will receive a requirements overview paragraph and an ECRI spreadsheet for the assigned modality. Review the assigned modality description below, identify the core clinical need, and draft measurable, vendor-neutral requirements that could be used in a procurement. Use the Compliance Matrix Template, benchmarking notes, and market research to support your work. <strong>Type your responses in the boxes provided.</strong></p>
-
-  <div class="callout">
-    <strong>Assigned modalities:</strong> MRI, CT Scanner, X-ray, Portable X-ray
-  </div>
-
-  <div class="part-header">Assigned Modality</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Which modality is your group assigned?</strong></label><br>
-    <select style="width: 100%; max-width: 420px;">
-      <option value="">Select one</option>
-      <option value="MRI">MRI</option>
-      <option value="CT Scanner">CT Scanner</option>
-      <option value="X-ray">X-ray</option>
-      <option value="Portable X-ray">Portable X-ray</option>
-    </select>
-  </div>
-
-  <div class="part-header">1. Clinical Need Summary</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> Summarize the clinical need and intended use of the equipment in one to two paragraphs.</label><br>
-    <textarea placeholder="Describe the clinical need, patient population, and intended use of the imaging system..." rows="5" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">2. Key Technical Requirements</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> Draft 5–8 clear, measurable, vendor-neutral technical requirements.</label><br>
-    <textarea placeholder="List each requirement and explain how it should be measured or validated..." rows="6" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">3. Vendor-Neutral Review</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> Identify any language that is too specific, biased toward a vendor, or not measurable. Rewrite it to be objective and procurement-ready.</label><br>
-    <textarea placeholder="Example: Replace vendor-specific wording such as 'must be compatible with Brand X' with a requirement that states compatibility, performance, or interoperability criteria..." rows="5" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">4. Service and Support Needs</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> Identify any installation, training, maintenance, software, or support requirements that must be included in the technical specification.</label><br>
-    <textarea placeholder="Document required support items such as training, preventive maintenance, software updates, service response times, or system integration support..." rows="5" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">5. Missing Information / Open Questions</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> List any assumptions, clarifying questions, or missing details that must be resolved before finalizing the requirement set.</label><br>
-    <textarea placeholder="List missing information, required clarifications, or assumptions..." rows="4" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">Modality Profiles</div>
-  <div class="callout">
-    <strong>MRI:</strong> This document highlights the requirements, technical specifications, and services being requested by XXX VA Medical Center toward the purchase of a replacement 1.5T Magnetic Resonance scanning system used for diagnostic MRI examinations. This MRI will be utilized for all orthopedic, vascular, abdominal, cardiac, breast, and neurological applications. It will require advanced neuro software, advanced cardiac software, and software for postprocessing of this imaging. In addition, it will require the liver lab and elastography software for abdominal imaging.
-  </div>
-
-  <div class="callout">
-    <strong>CT Scanner:</strong> The XXX VA Medical Center, Radiology Service, requests the procurement of one (1) advanced Computed Tomography (CT) scanner. The requested system is intended to support a broad range of clinical applications, including cardiovascular CT, CT angiography, neuro perfusion, dual energy imaging, CT-guided interventional procedures, and oncologic imaging. The system will serve a high-complexity veteran patient population requiring advanced diagnostic capabilities, including cardiac CT in patients with high or irregular heart rates, dual energy spectral imaging, and CT perfusion studies.
-  </div>
-
-  <div class="callout">
-    <strong>X-ray:</strong> The XXX VA Medical Center, Radiology Service, requests the procurement of one (1) digital radiographic (DR) room to support outpatient imaging services within the Radiology Department. The digital radiographic room will support a broad range of clinical procedures and imaging applications, including musculoskeletal, orthopedic, chest, abdominal, and general diagnostic radiography. Some of these procedures will be for standing scoliosis series and leg length studies.
-  </div>
-
-  <div class="callout">
-    <strong>Portable X-ray:</strong> This document highlights the requirements, technical specifications, and services being requested by XXX VA Medical Center toward the purchase of a portable radiographic unit that provides radiographic imaging in surgical, orthopedic, critical care, and emergency care procedures. The new unit will be used for imaging within the inpatient units, Emergency Department, and the Operating Rooms.
-  </div>
-
-  <div class="callout" style="margin-top: 30px;">
-    <strong>Tip:</strong> Draft requirements that are clear, measurable, and achievable by multiple qualified vendors. If a requirement cannot be tested or verified objectively, it likely needs to be rewritten before release.
-  </div>
-</section>
-
-<section class="lab-section" data-lab="Lab 3">
-  <h2>Lab 3: Vendor Questions Scenario Activity</h2>
-
-  <div class="objectives">
-    <strong>Activity:</strong> Vendor Questions Scenario Activity (Whole Group, 10 min)<br><br>
-    Participants will review realistic vendor questions and determine appropriate responses. The group will discuss whether the response requires additional actions such as clarification or modification of the technical specifications, reinforcing the importance of accuracy and consistency during the solicitation process.
-  </div>
-
-  <p><strong>Instructions:</strong> Review each scenario below and determine whether the government response is appropriate, whether additional clarification is needed, and whether the technical specification should be revised. Use the response to evaluate how procurement questions should be handled during source selection and solicitation administration.</p>
-
-  <div class="callout">
-    <strong>Draft below – updated by Jim/Angie – needs review by Kelly when she returns from leave.</strong>
-  </div>
-
-  <table class="styled-table">
-    <thead>
-      <tr>
-        <th>PO#</th>
-        <th>Modality</th>
-        <th>Vendor Question</th>
-        <th>Government Response</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>XXXB67003</td>
-        <td>XR US</td>
-        <td>
-          2c). Please confirm need for or remove navigation software requirement.<br><br>
-          2d). Please confirm need for or remove image fusion software requirement.<br><br>
-          5o). Please remove phantom requirement or move to value-add section.
-        </td>
-        <td>
-          <strong>2.c.</strong> Navigation software is a clinical requirement.<br><br>
-          <strong>2.d.</strong> Image fusion software is not required; technical specification has been updated.<br><br>
-          <strong>5.0.</strong> Phantom to be used for quality control testing is a clinical requirement.
-        </td>
-      </tr>
-      <tr>
-        <td>XXXB67010</td>
-        <td>XR US</td>
-        <td>Please confirm if this system will be used in the ED.</td>
-        <td>Yes, this is for use in the ED.</td>
-      </tr>
-      <tr>
-        <td>XXXB67011</td>
-        <td>XR MAMMO</td>
-        <td>3b. Imaging type-3D: Is this high resolution imaging or standard resolution?</td>
-        <td>High resolution.</td>
-      </tr>
-      <tr>
-        <td>XXXB61000</td>
-        <td>NM SPECT CT</td>
-        <td>What is the clinical justification for a 128-slice CT? Would a 64-slice CT be acceptable?</td>
-        <td>VA has clinical justification for 128-slice.</td>
-      </tr>
-      <tr>
-        <td>XXXB61001</td>
-        <td>NM SPECT CT</td>
-        <td>Is there a dedicated room provided for the installation of the UPS? If so, please include those room dimensions and drawings.</td>
-        <td>The site prep for this equipment will be a renovation of the space to include design and construction being handled by separate contracts. We are in the process of designing the space now, so we do not have exact dimensions. Please provide the dimensions required to provide the UPS as listed in the requirements for this equipment.</td>
-      </tr>
-      <tr>
-        <td>XXXB60010</td>
-        <td>XR US</td>
-        <td>
-          Image Fusion Software. Please confirm what procedures will be performed utilizing Fusion.<br><br>
-          Do you want a biplane, triplane, or both transducers?<br><br>
-          Do you want Transrectal (TR) or Transperineal (TP)?<br><br>
-          Do you want stabilized or freehand?
-        </td>
-        <td>
-          Trans-perineal prostate biopsies will be performed utilizing fusion.<br><br>
-          We would like biplane only per original tech specs.<br><br>
-          Clinical staff request Transperineal only.<br><br>
-          Clinical staff request freehand.
-        </td>
-      </tr>
-      <tr>
-        <td>XXXB69022</td>
-        <td>XR PORT C ARM</td>
-        <td>Line 30, 1k. Please lower the minimum generator output power to 2.3kW for fair, open competition.</td>
-        <td><strong>VA has a clinical need for this specification and it is offered by two or more vendors.</strong></td>
-      </tr>
-      <tr>
-        <td>XXXB63008</td>
-        <td>XR US</td>
-        <td>
-          Request item 1.j. Minimum battery life be reduced to 90 min.<br><br>
-          Request item 1.m. Maximum equipment weight be increased to 190 lbs.
-        </td>
-        <td>
-          <strong>1.j – VA has a clinical need for this specification and it is offered by two or more vendors.</strong><br><br>
-          <strong>1.m – Tech spec will not be changed.</strong>
-        </td>
-      </tr>
-      <tr>
-        <td>XXX5B5011</td>
-        <td>XR US</td>
-        <td>1.b. Can the minimum active screen size be reduced from 21.5 to 14 to increase competition?</td>
-        <td>No. Several vendors offer 21.5 inch or larger monitors, as this is the standard size for a cardiac ultrasound machine used in most hospitals. Decreasing the size to 14 inches would not be acceptable.<br><br><strong>Correct answer should be:</strong><br><strong>VA has a clinical need for this specification and it is offered by two or more vendors.</strong></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="callout" style="margin-top: 30px;">
-    <strong>Discussion prompt:</strong> For each scenario, ask: Was the requirement valid, was the question appropriately answered, and did the response require a specification change, a clarification, or no change at all?
-  </div>
-</section>
-
-<section class="lab-section" data-lab="Lab 4">
-  <h2>Lab 4: Technical Evaluation Activity</h2>
-
-  <div class="objectives">
-    <strong>Activity:</strong> Technical Evaluation Activity (Breakout, 20 min)<br><br>
-    Participants will evaluate simplified vendor proposals using defined criteria and their assigned modality. Groups will identify weaknesses, potential bias, and determine which vendor represents the best value based on the technical requirements. Results will be briefly shared with the full group.
-  </div>
-
-  <p><strong>Instructions:</strong> Use the same modality as Lab 2b and Lab 3. Pull the Matrix Aggregator and evaluate the sample vendor proposals below. Identify strengths, weaknesses, compliance gaps, and any concerns related to realism, bias, or value. <strong>Type your evaluation in the boxes provided.</strong></p>
-
-  <div class="callout">
-    <strong>Assigned modalities:</strong> MRI, CT, general x-ray, portable x-ray
-  </div>
-
-  <div class="part-header">1. Modality and Proposal Summary</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> Identify the modality assigned to your group and summarize the main evaluation criteria for the proposal.</label><br>
-    <textarea placeholder="Example: MRI, CT, x-ray, or portable x-ray; list the key technical, service, and performance criteria to be evaluated..." rows="5" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">2. Technical Compliance Review</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> Evaluate each vendor response against the requirements. Identify what is compliant, non-compliant, or not adequately supported.</label><br>
-    <textarea placeholder="List strengths, deficiencies, missing documentation, or technical mismatches..." rows="6" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">3. Bias or Risk Assessment</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> Note any vendor-specific language, unsupported claims, or factors that may bias the evaluation or reduce competition.</label><br>
-    <textarea placeholder="Describe any risk factors, unclear compliance statements, or language that may create an unfair advantage..." rows="5" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">4. Best Value Recommendation</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> Determine which vendor offers the best value and explain why, based on compliance, performance, and support considerations.</label><br>
-    <textarea placeholder="Explain your recommendation and identify the key reasons the selected vendor represents best value..." rows="5" style="width: 100%;"></textarea>
-  </div>
-
-  <div class="part-header">Sample Procurement Scenarios</div>
-  <table class="styled-table">
-    <thead>
-      <tr>
-        <th>Example ID</th>
-        <th>Modality</th>
-        <th>Scenario</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>660B60001</td>
-        <td>Portable</td>
-        <td>March 2026 consolidation</td>
-      </tr>
-      <tr>
-        <td>589B63005</td>
-        <td>MRI</td>
-        <td>March 2026</td>
-      </tr>
-      <tr>
-        <td>521B62001</td>
-        <td>CT Scanner</td>
-        <td>January 2026 turnkey</td>
-      </tr>
-      <tr>
-        <td>671B60026</td>
-        <td>RAD</td>
-        <td>March 2026</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="callout" style="margin-top: 30px;">
-    <strong>Possible role-play scenario:</strong> As time allows, groups may assume the role of a technical evaluation team and brief the class on the strengths, risks, and recommended award decision for the assigned proposal.
-  </div>
-</section>
-
-<section class="lab-section" data-lab="Lab 5">
-  <h2>Lab 5: Culminating Scenario Activity</h2>
-
-  <div class="objectives">
-    <strong>Activity:</strong> Culminating Scenario Activity (Breakout, 30 min)<br><br>
-    Participants will analyze a scenario in which a procurement effort is delayed or off track due to issues such as incomplete specifications, funding delays, or coordination breakdowns. Using knowledge from the course, groups will identify where in the process the breakdown occurred and propose corrective actions.
-  </div>
-
-  <p><strong>Instructions:</strong> The VA Hospital wants to replace a CT in Radiology. Review the scenario and identify examples of coordination breakdowns that could delay award and/or installation. Determine where the breakdown occurred in the process and explain how the situation could have been prevented.</p>
-
-  <div class="part-header">Scenario Prompt</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Case:</strong> The VA Hospital wants to replace a CT in Radiology.</label><br>
-    <textarea rows="5" style="width: 100%;" placeholder="Explain what coordination breakdowns may delay award and/or installation and how you would prevent them..."></textarea>
-  </div>
-
-  <div class="part-header">1. Coordination Breakdown Examples</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> List examples of coordination breakdowns that could delay award and/or installation.</label><br>
-    <textarea rows="6" style="width: 100%;" placeholder="Examples may include funding delays, unresolved technical issues, site preparation problems, installation delays, or communication failures between HTM, clinical staff, and vendors..."></textarea>
-  </div>
-
-  <div class="part-header">2. Where the Breakdown Occurred</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> Identify where in the procurement lifecycle the breakdown occurred.</label><br>
-    <textarea rows="5" style="width: 100%;" placeholder="Lifecycle planning, technical specifications, technical evaluation, implementation, or finance/funding..."></textarea>
-  </div>
-
-  <div class="part-header">3. Corrective Actions</div>
-  <div style="margin: 8px 0 12px 0;">
-    <label><strong>Your Answer:</strong> Describe the corrective actions that should be taken to prevent similar delays in the future.</label><br>
-    <textarea rows="6" style="width: 100%;" placeholder="Include actions such as earlier planning, more complete market research, better stakeholder communication, funding coordination, clearer technical requirements, or more robust implementation planning..."></textarea>
-  </div>
-
-  <div class="part-header">Example Conversation Points</div>
-  <div class="callout">
-    <strong>Lifecycle Planning:</strong>
-    <ul>
-      <li>Funding not available to execute the package in the desired fiscal year</li>
-      <li>Purchase approvals not completed in time (equipment committee, VACO HCHT, etc.)</li>
-    </ul>
-
-    <strong>Technical Specifications / Technical Evaluation:</strong>
-    <ul>
-      <li>Vendor responses on matrix do not align with quote</li>
-      <li>Wireless modality requirements in spec but vendor non-compliant</li>
-      <li>Not realizing missing ancillary equipment on quotes resulting in modifications needed</li>
-    </ul>
-
-    <strong>Implementation:</strong>
-    <ul>
-      <li>Sizing issues not discovered until site prep begins, resulting in a modification needed</li>
-      <li>ERA processing delays</li>
-      <li>Miscommunication between HTM and clinical staff regarding downtime of equipment/room</li>
-      <li>Training delays and/or not enough training purchased</li>
-    </ul>
-
-    <strong>Finance/Funding Issues:</strong>
-    <ul>
-      <li>Not enough funding on equipment PO</li>
-      <li>Not enough funding on turnkey PO</li>
-      <li>PO and G-invoice modifications needed</li>
-      <li>Funding types – activations, VACO funds</li>
-      <li>Equipment modifications requiring an increase and resulting in a need for prior year funds</li>
-    </ul>
-  </div>
-
-  <div class="callout" style="margin-top: 30px;">
-    <strong>Prompt for discussion:</strong> Ask: Where in the process did the project become misaligned, which stakeholder(s) were involved, and what early intervention could have reduced risk?
-  </div>
-</section>
-
-  <footer class="footer">
-    <p>&copy; 2026 HTMxxx Lab Materials</p>
+  <footer class="app-footer">
+    <p>&copy; 2026 HTMxxx lab materials. This workbook is for training use. Confirm live SharePoint links and lead names against the current sites.</p>
   </footer>
 
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+
   <script>
-    function filterLabs() {
-      const select = document.getElementById('labFilter');
-      const value = select.value;
-      const sections = document.querySelectorAll('.lab-section');
-      sections.forEach(section => {
-        section.classList.toggle('active', section.dataset.lab === value || value === '');
-      });
+    const LABS = [
+      { id: "guide", label: "User guide", meta: "Start here" },
+      { id: "lab1", label: "Lab 1", meta: "Resource hunt" },
+      { id: "lab2", label: "Lab 2", meta: "Spec review" },
+      { id: "lab2b", label: "Lab 2b", meta: "Spec drafting" },
+      { id: "lab3", label: "Lab 3", meta: "Vendor questions" },
+      { id: "lab4", label: "Lab 4", meta: "Technical evaluation" },
+      { id: "lab5", label: "Lab 5", meta: "Culminating scenario" }
+    ];
+
+    const STORAGE_KEY = "htmxxx-nac-labs-v2";
+    const THEME_KEY = "htmxxx-nac-theme";
+
+    const nav = document.getElementById("lab-nav");
+    const sections = Array.from(document.querySelectorAll(".lab-section"));
+    const statusEl = document.getElementById("status");
+    const themeBtn = document.getElementById("theme-toggle");
+
+    function announce(message) {
+      statusEl.textContent = message;
+      statusEl.classList.add("show");
+      window.clearTimeout(announce._t);
+      announce._t = window.setTimeout(() => statusEl.classList.remove("show"), 1800);
     }
 
-    const themeToggle = document.getElementById('theme-toggle');
-    themeToggle.addEventListener('change', () => {
-      document.body.classList.toggle('dark', themeToggle.checked);
-      document.body.classList.toggle('light', !themeToggle.checked);
-    });
-
-    function copyCode(button) {
-      const pre = button.nextElementSibling;
-      const code = pre.innerText.trim();
-      
-      navigator.clipboard.writeText(code).then(() => {
-        const originalText = button.innerHTML;
-        button.innerHTML = "Copied!";
-        button.style.backgroundColor = "#28a745";
-        setTimeout(() => {
-          button.innerHTML = originalText;
-          button.style.backgroundColor = "";
-        }, 1800);
-      }).catch(() => {
-        const textArea = document.createElement("textarea");
-        textArea.value = code;
-        document.body.appendChild(textArea);
-        textArea.select();
-        document.execCommand("copy");
-        document.body.removeChild(textArea);
-        const originalText = button.innerHTML;
-        button.innerHTML = "Copied!";
-        setTimeout(() => button.innerHTML = originalText, 1800);
-      });
+    function currentLab() {
+      return new URLSearchParams(location.search).get("lab") || "guide";
     }
 
-    function toggleAnswer(btn) {
-      const content = btn.nextElementSibling;
-      if (content.classList.contains('show')) {
-        content.classList.remove('show');
-        btn.textContent = btn.getAttribute('data-show-text') || 'Show Answer';
-      } else {
-        content.classList.add('show');
-        btn.textContent = btn.getAttribute('data-hide-text') || 'Hide Answer';
+    function showLab(id, { push = true } = {}) {
+      const valid = LABS.some((lab) => lab.id === id) ? id : "guide";
+      sections.forEach((section) => {
+        const on = section.dataset.lab === valid;
+        section.classList.toggle("active", on);
+        section.toggleAttribute("hidden", !on);
+      });
+      nav.querySelectorAll("button").forEach((btn) => {
+        btn.setAttribute("aria-current", String(btn.dataset.lab === valid));
+      });
+      if (push) {
+        const url = new URL(location.href);
+        url.searchParams.set("lab", valid);
+        history.pushState({ lab: valid }, "", url);
       }
+      document.getElementById("main").focus({ preventScroll: true });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
-    window.addEventListener('load', () => {
-      const select = document.getElementById('labFilter');
-      select.value = "User Guide";
-      filterLabs();
+    function buildNav() {
+      LABS.forEach((lab) => {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.dataset.lab = lab.id;
+        btn.innerHTML = `${lab.label}<span class="meta">${lab.meta}</span>`;
+        btn.addEventListener("click", () => showLab(lab.id));
+        li.appendChild(btn);
+        nav.appendChild(li);
+      });
+    }
+
+    function collectFields() {
+      return Array.from(document.querySelectorAll("[data-persist]"));
+    }
+
+    function loadAnswers() {
+      try {
+        const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+        collectFields().forEach((field) => {
+          if (typeof data[field.id] === "string") field.value = data[field.id];
+        });
+      } catch (err) {
+        console.warn("Could not load saved answers", err);
+      }
+      updateProgress();
+    }
+
+    function saveAnswers(quiet) {
+      const data = {};
+      collectFields().forEach((field) => {
+        data[field.id] = field.value;
+      });
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      updateProgress();
+      if (!quiet) announce("Answers saved on this device");
+    }
+
+    function updateProgress() {
+      const fields = collectFields();
+      const filled = fields.filter((field) => field.value.trim().length > 0).length;
+      const pct = fields.length ? Math.round((filled / fields.length) * 100) : 0;
+      const bar = document.getElementById("progress-bar");
+      const text = document.getElementById("progress-text");
+      bar.value = pct;
+      bar.textContent = `${pct}%`;
+      text.textContent = `${pct}% (${filled}/${fields.length})`;
+    }
+
+    function exportAnswers() {
+      saveAnswers(true);
+      const lines = ["HTMxxx NAC Procurement Labs — student answers", `Exported: ${new Date().toISOString()}`, ""];
+      collectFields().forEach((field) => {
+        const label = document.querySelector(`label[for="${field.id}"]`);
+        lines.push(`## ${label ? label.textContent : field.id}`);
+        lines.push(field.value.trim() || "[no answer]");
+        lines.push("");
+      });
+      const blob = new Blob([lines.join("\n")], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "nac-procurement-lab-answers.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+      announce("Answer file downloaded");
+    }
+
+    function applyTheme(dark) {
+      document.body.classList.toggle("dark", dark);
+      document.body.classList.toggle("light", !dark);
+      themeBtn.setAttribute("aria-pressed", String(dark));
+      themeBtn.textContent = dark ? "Light mode" : "Dark mode";
+      localStorage.setItem(THEME_KEY, dark ? "dark" : "light");
+    }
+
+    document.addEventListener("click", (event) => {
+      const btn = event.target.closest(".answer-btn");
+      if (!btn) return;
+      const panel = document.getElementById(btn.getAttribute("aria-controls"));
+      const open = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!open));
+      btn.textContent = open ? "Show model answer" : "Hide model answer";
+      panel.classList.toggle("show", !open);
     });
+
+    document.addEventListener("input", (event) => {
+      if (event.target.matches("[data-persist]")) {
+        saveAnswers(true);
+      }
+    });
+
+    document.getElementById("save-btn").addEventListener("click", () => saveAnswers(false));
+    document.getElementById("export-btn").addEventListener("click", exportAnswers);
+    document.getElementById("print-btn").addEventListener("click", () => window.print());
+    document.getElementById("clear-btn").addEventListener("click", () => {
+      if (!confirm("Clear all saved answers on this device?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      collectFields().forEach((field) => { field.value = ""; });
+      updateProgress();
+      announce("Saved answers cleared");
+    });
+    themeBtn.addEventListener("click", () => {
+      applyTheme(!document.body.classList.contains("dark"));
+    });
+
+    window.addEventListener("popstate", () => showLab(currentLab(), { push: false }));
+
+    document.querySelectorAll("img").forEach((img) => {
+      img.addEventListener("error", () => {
+        img.classList.add("missing");
+        const cap = img.parentElement && img.parentElement.querySelector("figcaption");
+        if (cap && !cap.dataset.missing) {
+          cap.dataset.missing = "1";
+          cap.textContent += " — screenshot file not bundled with this page.";
+        }
+      });
+    });
+
+    buildNav();
+    applyTheme(localStorage.getItem(THEME_KEY) === "dark");
+    loadAnswers();
+    showLab(currentLab(), { push: false });
   </script>
 </body>
 </html>
