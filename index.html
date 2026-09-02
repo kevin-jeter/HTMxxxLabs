@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="light dark" />
-  <title>HTMxxx: NAC Procurement Labs</title>
+  <title>HTM253: NAC Procurement Labs</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet" />
@@ -534,8 +534,8 @@
   <header class="app-header">
     <div class="header-inner">
       <div class="brand">
-        <span class="kicker">Healthcare Technology Management</span>
-        <h1>NAC Procurement Labs</h1>
+        <span class="kicker">VHA Healthcare Technology Management Training & Education</span>
+        <h1>HTM253: NAC Procurement Labs</h1>
       </div>
       <div class="header-actions">
         <button class="ghost-btn" type="button" id="save-btn">Save answers</button>
@@ -571,19 +571,14 @@
           <h2 class="lab-title" id="guide-title">How to use this workbook</h2>
           <div class="lab-meta">
             <span class="chip">Start here</span>
-            <span class="chip">Self-paced</span>
-            <span class="chip">Answers optional to reveal</span>
+            <span class="chip">Instructor-led</span>
           </div>
-          <p>This page is the student workbook for the NAC procurement labs. Choose a lab in the left menu. Type your responses in the boxes. Use <strong>Show model answer</strong> only after you have attempted the task.</p>
+          <p>This page is the student workbook for the NAC procurement labs. Choose a lab in the left menu. Type your responses in the boxes.</p>
           <ul>
             <li>Your typed answers are saved automatically in this browser.</li>
             <li>Use <strong>Download answers</strong> before you leave a shared computer.</li>
             <li>Use <strong>Print / PDF</strong> if you need a paper copy for class discussion.</li>
-            <li>Correct answers in Lab 1 are hidden until you choose to reveal them.</li>
           </ul>
-        </div>
-        <div class="objectives">
-          <strong>Suggested path:</strong> complete Lab 1 first so you know where the SharePoint tools live. Then work Labs 2 and 2b as a pair (review, then draft). Labs 3–5 apply those skills to vendor questions, evaluation, and a delayed procurement scenario.
         </div>
         <div class="tip">
           <strong>Classroom tip:</strong> If you are in a breakout group, one person can share the screen while everyone types into their own copy. Compare wording before you reveal any model answers.
@@ -660,7 +655,7 @@
         <div class="page-intro page-card">
           <h2 class="lab-title" id="lab2-title">Lab 2: Technical specification review</h2>
           <div class="lab-meta">
-            <span class="chip">Group</span>
+            <span class="chip">Group activity</span>
             <span class="chip">Breakout</span>
             <span class="chip">About 20 minutes</span>
           </div>
@@ -669,7 +664,7 @@
           </div>
           <p>
             Download
-            <a href="_LabDownloads/NAC Training Example - SCANNING.pdf" download>NAC Training Example – SCANNING.pdf</a>
+            <a href="https://dvagov.sharepoint.com/:f:/r/sites/HTMTE/Courses/HTM253/Session%20Content/Lab2%20Files?d=wdcaed91c5cb842009d1332a065436faa&csf=1&web=1&e=DPejJ7" target="_blank">Lab 2 Files</a>
             and review sections <strong>A through G</strong>. For each section, record issues to improve, add, or remove. Watch for measurable requirements, vendor-neutral language, and correct use of <em>shall / should / must</em>.
           </p>
         </div>
@@ -726,7 +721,14 @@
           <div class="objectives">
             <strong>Goal:</strong> Translate a clinical need into clear, measurable, vendor-neutral requirements for an assigned modality (CT, X-ray, MRI, or portable X-ray).
           </div>
-          <p>Your group will receive a requirements overview and an ECRI spreadsheet. Identify the core clinical need, then draft procurement-ready requirements using the compliance matrix, benchmarking notes, and market research.</p>
+          <p>Use your assigned modality to answer the below questions. Identify the core clinical need, then draft procurement-ready requirements using the compliance matrix, benchmarking notes, and market research. You can access your modality at <a href="https://dvagov.sharepoint.com/:f:/r/sites/HTMTE/Courses/HTM253/Session%20Content/Lab2b%20Files?d=w99134dd8a607455fbf5b7723d2ee5486&csf=1&web=1&e=vTTyPq" target="_blank">Lab 2b Files</a></p>
+            <ul>
+              <li><b>Group 1:</b> MRI</li>
+              <li><b>Group 2:</b> CT Scanner</li>
+              <li><b>Group 3:</b> X-ray</li>
+              <li><b>Group 4:</b> Portable X-ray</li>
+            </ul>
+          </p>
         </div>
 
         <article class="task-card">
@@ -740,6 +742,21 @@
             <option value="Portable X-ray">Portable X-ray</option>
           </select>
         </article>
+        <div class="page-intro page-card" id="lab2b-profiles">
+          <h3>Modality profiles</h3>
+          <div class="callout modality-profile" data-modality="MRI" hidden>
+            <strong>MRI:</strong> XXX VA Medical Center needs a replacement 1.5T MRI for diagnostic exams covering orthopedic, vascular, abdominal, cardiac, breast, and neurological applications. It requires advanced neuro and cardiac software, post-processing software, and liver lab plus elastography software for abdominal imaging.
+          </div>
+          <div class="callout modality-profile" data-modality="CT Scanner" hidden>
+            <strong>CT Scanner:</strong> Radiology requests one advanced CT scanner for cardiovascular CT, CT angiography, neuro perfusion, dual-energy imaging, CT-guided interventions, and oncologic imaging. The veteran population includes high-complexity studies such as cardiac CT with high or irregular heart rates, spectral imaging, and perfusion.
+          </div>
+          <div class="callout modality-profile" data-modality="X-ray" hidden>
+            <strong>X-ray:</strong> Radiology requests one digital radiographic (DR) room for outpatient musculoskeletal, orthopedic, chest, abdominal, and general diagnostic work, including standing scoliosis series and leg-length studies.
+          </div>
+          <div class="callout modality-profile" data-modality="Portable X-ray" hidden>
+            <strong>Portable X-ray:</strong> A portable radiographic unit is needed for surgical, orthopedic, critical care, and emergency procedures, used on inpatient units, in the Emergency Department, and in Operating Rooms.
+          </div>
+        </div>
 
         <article class="task-card">
           <h3>1. Clinical need summary</h3>
@@ -767,21 +784,6 @@
           <textarea id="lab2b-q5" data-persist></textarea>
         </article>
 
-        <div class="page-intro page-card">
-          <h3>Modality profiles</h3>
-          <div class="callout">
-            <strong>MRI:</strong> XXX VA Medical Center needs a replacement 1.5T MRI for diagnostic exams covering orthopedic, vascular, abdominal, cardiac, breast, and neurological applications. It requires advanced neuro and cardiac software, post-processing software, and liver lab plus elastography software for abdominal imaging.
-          </div>
-          <div class="callout">
-            <strong>CT Scanner:</strong> Radiology requests one advanced CT scanner for cardiovascular CT, CT angiography, neuro perfusion, dual-energy imaging, CT-guided interventions, and oncologic imaging. The veteran population includes high-complexity studies such as cardiac CT with high or irregular heart rates, spectral imaging, and perfusion.
-          </div>
-          <div class="callout">
-            <strong>X-ray:</strong> Radiology requests one digital radiographic (DR) room for outpatient musculoskeletal, orthopedic, chest, abdominal, and general diagnostic work, including standing scoliosis series and leg-length studies.
-          </div>
-          <div class="callout">
-            <strong>Portable X-ray:</strong> A portable radiographic unit is needed for surgical, orthopedic, critical care, and emergency procedures, used on inpatient units, in the Emergency Department, and in Operating Rooms.
-          </div>
-        </div>
         <div class="tip">
           <strong>Tip:</strong> If a requirement cannot be tested or verified, rewrite it before release.
         </div>
@@ -792,7 +794,7 @@
           <h2 class="lab-title" id="lab3-title">Lab 3: Vendor questions scenario</h2>
           <div class="lab-meta">
             <span class="chip">Whole group</span>
-            <span class="chip">About 10 minutes</span>
+            <span class="chip">About 20 minutes</span>
           </div>
           <div class="objectives">
             <strong>Goal:</strong> Review realistic vendor questions and decide whether the government response is appropriate, whether clarification is needed, and whether the specification should change.
@@ -832,7 +834,7 @@
               </div>
               <div>
                 <h4>Government response</h4>
-                <p>Yes, this is for use in the ED.</p>
+                <textarea id="lab3-XXXB67010" data-persist placeholder="Your notes on the government response"></textarea>
               </div>
             </div>
           </article>
@@ -849,7 +851,7 @@
               </div>
               <div>
                 <h4>Government response</h4>
-                <p>High resolution.</p>
+                <textarea id="lab3-XXXB67011" data-persist placeholder="Your notes on the government response"></textarea>
               </div>
             </div>
           </article>
@@ -866,7 +868,7 @@
               </div>
               <div>
                 <h4>Government response</h4>
-                <p>VA has clinical justification for 128-slice.</p>
+                <textarea id="lab3-XXXB61000" data-persist placeholder="Your notes on the government response"></textarea>
               </div>
             </div>
           </article>
@@ -883,7 +885,7 @@
               </div>
               <div>
                 <h4>Government response</h4>
-                <p>Site prep is a separate renovation. Design is in progress, so exact dimensions are not available. Provide the dimensions required to install the UPS listed in the requirements.</p>
+                <textarea id="lab3-XXXB61001" data-persist placeholder="Your notes on the government response"></textarea>
               </div>
             </div>
           </article>
@@ -903,10 +905,7 @@
               </div>
               <div>
                 <h4>Government response</h4>
-                <p>Trans-perineal prostate biopsies will use fusion.</p>
-                <p>Biplane only, per the original spec.</p>
-                <p>Clinical staff request transperineal only.</p>
-                <p>Clinical staff request freehand.</p>
+                <textarea id="lab3-XXXB60010" data-persist placeholder="Your notes on the government response"></textarea>
               </div>
             </div>
           </article>
@@ -923,7 +922,7 @@
               </div>
               <div>
                 <h4>Government response</h4>
-                <p>VA has a clinical need for this specification and it is offered by two or more vendors.</p>
+                <textarea id="lab3-XXXB69022" data-persist placeholder="Your notes on the government response"></textarea>
               </div>
             </div>
           </article>
@@ -941,8 +940,7 @@
               </div>
               <div>
                 <h4>Government response</h4>
-                <p><strong>1.j</strong> — VA has a clinical need for this specification and it is offered by two or more vendors.</p>
-                <p><strong>1.m</strong> — Tech spec will not be changed.</p>
+                <textarea id="lab3-XXXB63008" data-persist placeholder="Your notes on the government response"></textarea>
               </div>
             </div>
           </article>
@@ -959,31 +957,32 @@
               </div>
               <div>
                 <h4>Government response</h4>
-                <p>Original draft: No. Several vendors offer 21.5-inch or larger monitors; 14 inches would not be acceptable for a cardiac ultrasound machine used in most hospitals.</p>
-                <p><strong>Preferred response:</strong> VA has a clinical need for this specification and it is offered by two or more vendors.</p>
+                <textarea id="lab3-XXX5B5011" data-persist placeholder="Your notes on the government response"></textarea>
               </div>
             </div>
           </article>
         </div>
-
-        <article class="task-card">
-          <h3>Discussion notes</h3>
-          <label class="field-label" for="lab3-notes">Record which responses should change, be clarified, or stay as written</label>
-          <textarea id="lab3-notes" data-persist placeholder="Example: XXX5B5011 should use the standard clinical-need / two-or-more-vendors language."></textarea>
-        </article>
       </section>
 
       <section class="lab-section" data-lab="lab4" aria-labelledby="lab4-title">
         <div class="page-intro page-card">
           <h2 class="lab-title" id="lab4-title">Lab 4: Technical evaluation</h2>
           <div class="lab-meta">
+            <span class="chip">Group activity</span>
             <span class="chip">Breakout</span>
             <span class="chip">About 20 minutes</span>
           </div>
           <div class="objectives">
             <strong>Goal:</strong> Evaluate simplified vendor proposals against defined criteria. Identify weaknesses, possible bias, and best value.
           </div>
-          <p>Use the same modality as Labs 2b and 3. Pull the matrix aggregator and evaluate the sample vendor proposals. Note strengths, gaps, realism, and value.</p>
+          <p>Use the matrix aggregator and evaluate the sample vendor proposals with the same modality used in Lab 2b. Note strengths, gaps, realism, and value. You can access the Matrix Aggregator and sample proposals at <a href="https://dvagov.sharepoint.com/:f:/r/sites/HTMTE/Courses/HTM253/Session%20Content/Lab4%20Files?d=wc715e8ac431b443ead47acfa39c585c4&csf=1&web=1&e=yhu2En" target="_blank">Lab 4 Files</a></p>
+            <ul>
+              <li><b>Group 1:</b> MRI</li>
+              <li><b>Group 2:</b> CT Scanner</li>
+              <li><b>Group 3:</b> X-ray</li>
+              <li><b>Group 4:</b> Portable X-ray</li>
+            </ul>
+          </p>
         </div>
 
         <article class="task-card">
@@ -1037,6 +1036,7 @@
         <div class="page-intro page-card">
           <h2 class="lab-title" id="lab5-title">Lab 5: Culminating scenario</h2>
           <div class="lab-meta">
+            <span class="chip">Group activity</span>
             <span class="chip">Breakout</span>
             <span class="chip">About 30 minutes</span>
           </div>
@@ -1046,11 +1046,6 @@
           <p>The VA hospital wants to replace a CT in Radiology. Identify coordination breakdowns that could delay award or installation, locate them in the process, and explain how to prevent them.</p>
         </div>
 
-        <article class="task-card">
-          <h3>Scenario notes</h3>
-          <label class="field-label" for="lab5-case">What could delay award or installation, and how would you prevent it?</label>
-          <textarea id="lab5-case" data-persist></textarea>
-        </article>
         <article class="task-card">
           <h3>1. Coordination breakdown examples</h3>
           <label class="field-label" for="lab5-q1">Examples that could delay award or installation</label>
@@ -1111,7 +1106,7 @@
   </div>
 
   <footer class="app-footer">
-    <p>&copy; 2026 HTMxxx lab materials. This workbook is for training use. Confirm live SharePoint links and lead names against the current sites.</p>
+    <p>&copy; 2026 HTM253 lab materials. This workbook is for training use.</p>
   </footer>
 
   <div class="status" id="status" role="status" aria-live="polite"></div>
@@ -1127,8 +1122,8 @@
       { id: "lab5", label: "Lab 5", meta: "Culminating scenario" }
     ];
 
-    const STORAGE_KEY = "htmxxx-nac-labs-v2";
-    const THEME_KEY = "htmxxx-nac-theme";
+    const STORAGE_KEY = "ht253-nac-labs-v2";
+    const THEME_KEY = "ht253-nac-theme";
 
     const nav = document.getElementById("lab-nav");
     const sections = Array.from(document.querySelectorAll(".lab-section"));
@@ -1217,7 +1212,7 @@
 
     function exportAnswers() {
       saveAnswers(true);
-      const lines = ["HTMxxx NAC Procurement Labs — student answers", `Exported: ${new Date().toISOString()}`, ""];
+      const lines = ["HTM253 NAC Procurement Labs — student answers", `Exported: ${new Date().toISOString()}`, ""];
       collectFields().forEach((field) => {
         const label = document.querySelector(`label[for="${field.id}"]`);
         lines.push(`## ${label ? label.textContent : field.id}`);
@@ -1261,6 +1256,7 @@
     document.getElementById("save-btn").addEventListener("click", () => saveAnswers(false));
     document.getElementById("export-btn").addEventListener("click", exportAnswers);
     document.getElementById("print-btn").addEventListener("click", () => window.print());
+    document.getElementById("lab2b-mod").addEventListener("change", updateModalityProfiles);
     document.getElementById("clear-btn").addEventListener("click", () => {
       if (!confirm("Clear all saved answers on this device?")) return;
       localStorage.removeItem(STORAGE_KEY);
@@ -1288,7 +1284,15 @@
     buildNav();
     applyTheme(localStorage.getItem(THEME_KEY) === "dark");
     loadAnswers();
+    updateModalityProfiles();
     showLab(currentLab(), { push: false });
+  function updateModalityProfiles() {
+  const selected = document.getElementById("lab2b-mod").value;
+  document.querySelectorAll(".modality-profile").forEach((el) => {
+  const match = selected !== "" && el.dataset.modality === selected;
+    el.hidden = !match;
+  });
+}
   </script>
 </body>
 </html>
